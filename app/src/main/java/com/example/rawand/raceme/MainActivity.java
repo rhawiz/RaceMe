@@ -1,16 +1,19 @@
 package com.example.rawand.raceme;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends Activity {
-
+    Intent loginView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginView = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(loginView);
         setContentView(R.layout.activity_main);
     }
 
@@ -34,6 +37,16 @@ public class MainActivity extends Activity {
             return true;
         }
 
+        if (id == R.id.action_logout){
+            logout();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logout(){
+
+        startActivity(loginView);
     }
 }
