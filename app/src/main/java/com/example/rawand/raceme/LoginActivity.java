@@ -88,6 +88,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME );
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
@@ -291,6 +299,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
 
             if (success) {
+                //If login was successful set SharedPreference to store login credentials.
+                SaveSharedPreference.setUserName(getApplicationContext(),mEmail);
                 finish();
 
             } else {
@@ -306,7 +316,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             mAuthTask = null;
             showProgress(false);
         }
+
+
     }
+
+
 }
 
 

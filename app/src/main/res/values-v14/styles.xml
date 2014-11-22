@@ -2,7 +2,6 @@
     <!-- Base application theme. -->
     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!-- Android API 14+ -->
-        <item name="android:windowBackground"> #ffedeba6 </item>
 
     </style>
 

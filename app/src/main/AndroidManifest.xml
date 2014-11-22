@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.rawand.raceme.MainActivity"
+            android:name="com.example.rawand.raceme.BaseActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,6 +36,23 @@
             android:name="com.example.rawand.raceme.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
+        <activity
+            android:name="com.example.rawand.raceme.MainActivity"
+            android:label="@string/title_activity_base" >
+        </activity>
+=
+        <activity
+            android:name="com.example.rawand.raceme.RaceActivity"
+            android:label="@string/title_activity_race" >
+        </activity>
+        <activity
+            android:name="com.example.rawand.raceme.ChallengesActivity"
+            android:label="@string/title_activity_challenges" >
+        </activity>
+        <activity
+            android:name="com.example.rawand.raceme.ProfileActivity"
+            android:label="@string/title_activity_profile" >
         </activity>
     </application>
 
