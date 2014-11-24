@@ -26,25 +26,25 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <LinearLayout
+                <GridLayout
                     android:id="@+id/race_details_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"></GridLayout>
 
-                <LinearLayout
+                <GridLayout
                     android:id="@+id/race_map_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"></GridLayout>
 
-                <LinearLayout
+                <GridLayout
                     android:id="@+id/race_navigation_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical"></LinearLayout>
+                    android:orientation="vertical"></GridLayout>
 
-                <LinearLayout
+                <GridLayout
                     android:id="@+id/race_timing_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"

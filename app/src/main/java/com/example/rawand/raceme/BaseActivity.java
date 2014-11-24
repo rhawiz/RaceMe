@@ -135,8 +135,6 @@ public class BaseActivity extends Activity {
             default:
                 break;
         }
-
-
     }
 
     @Override

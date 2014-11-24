@@ -54,6 +54,10 @@
             android:name="com.example.rawand.raceme.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
+        <activity
+            android:name="com.example.rawand.raceme.RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
     </application>
 
 </manifest>
