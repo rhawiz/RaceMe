@@ -3,27 +3,42 @@ package com.example.rawand.raceme;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by RAWAND on 20/11/2014.
  */
 public class SaveSharedPreference
 {
-    static final String USER_NAME= "username";
+    static final String USER_DETAILS = "userDetails";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
     }
 
-    public static void setUserName(Context context, String userName)
+    public static void setUserDetails(Context context, User userDetails)
     {
         SharedPreferences.Editor editor = getSharedPreferences(context).edit();
-        editor.putString(USER_NAME, userName);
+        Gson gson = new Gson();
+        String json = gson.toJson(userDetails);
+        editor.clear();
+        editor.putString(USER_DETAILS, json);
         editor.commit();
     }
 
-    public static String getUserName(Context context)
+    public static User getUserDetails(Context context)
     {
-        return getSharedPreferences(context).getString(USER_NAME, "");
+        Gson gson = new Gson();
+        String json = getSharedPreferences(context).getString(USER_DETAILS,"");
+        return gson.fromJson(json,User.class);
+
     }
+
+
 }

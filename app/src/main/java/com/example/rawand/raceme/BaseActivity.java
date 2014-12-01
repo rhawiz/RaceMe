@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Set;
+
 
 public class BaseActivity extends Activity {
     protected FrameLayout frameLayout;
@@ -53,7 +55,10 @@ public class BaseActivity extends Activity {
         });
 
         //If the user is not set (i.e. not logged in), call the logout method.
-        if(SaveSharedPreference.getUserName(this).length() == 0){
+        if(SaveSharedPreference.getUserDetails(this) == null){
+            logout();
+        }
+        else if(SaveSharedPreference.getUserDetails(this).isEmpty()){
             logout();
         }
 
@@ -189,7 +194,7 @@ public class BaseActivity extends Activity {
         setTitle(listArray[0]);
         drawerLayout.closeDrawer(drawerList);
         BaseActivity.position = 0;
-        SaveSharedPreference.setUserName(getApplicationContext(),"");
+        SaveSharedPreference.setUserDetails(getApplicationContext(), null);
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
 

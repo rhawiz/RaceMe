@@ -30,25 +30,74 @@
                     android:id="@+id/race_details_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical"></GridLayout>
+                    android:layout_marginTop="10dp">
+
+                    <Chronometer
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/CustomTextLarge"
+                        android:gravity="center"
+                        android:id="@+id/timer"
+                        android:layout_row="0"
+                        android:layout_column="0"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@style/CustomTextMedium"
+                        android:text="0m"
+                        android:id="@+id/distance_travelled_view"
+                        android:layout_column="0"
+                        android:layout_row="1" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textAppearance="@style/CustomTextMedium"
+                        android:text="0m"
+                        android:id="@+id/average_speed_view"
+                        android:layout_column="1"
+                        android:layout_row="1" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Start"
+                        android:id="@+id/start_button"
+                        android:layout_row="2"
+                        android:layout_column="0"
+                        android:layout_gravity="top" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Stop"
+                        android:id="@+id/stop_button"
+                        android:layout_row="3"
+                        android:layout_column="0"
+                        android:layout_gravity="top" />
+
+
+                </GridLayout>
 
                 <GridLayout
                     android:id="@+id/race_map_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical"></GridLayout>
+                    android:orientation="vertical">
 
-                <GridLayout
-                    android:id="@+id/race_navigation_tab"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"></GridLayout>
+                    <fragment
+                        android:id="@+id/map"
+                        class="com.google.android.gms.maps.MapFragment"
+                        android:layout_row="4"
+                        android:layout_column="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:layout="@layout/activity_race" />
+                </GridLayout>
 
-                <GridLayout
-                    android:id="@+id/race_timing_tab"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical" />
             </FrameLayout>
         </LinearLayout>
     </TabHost>

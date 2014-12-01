@@ -5,6 +5,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
+import java.util.Set;
 
 
 public class MainActivity extends BaseActivity {
@@ -17,11 +18,11 @@ public class MainActivity extends BaseActivity {
         setTitle(listArray[position]);
 
         TextView text = (TextView) findViewById(R.id.main_text_view);
-        text.setText(SaveSharedPreference.getUserName(this));
 
+        if(SaveSharedPreference.getUserDetails(this) != null) {
+            text.setText(SaveSharedPreference.getUserDetails(this).toString());
+        }
     }
-
-
 
 
 }

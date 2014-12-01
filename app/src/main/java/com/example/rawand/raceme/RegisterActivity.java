@@ -1,35 +1,60 @@
 package com.example.rawand.raceme;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import java.sql.SQLException;
 
 
 public class RegisterActivity extends Activity {
     private EditText firstnameView;
     private EditText surnameView;
     private EditText emailView;
+    private EditText usernameView;
     private EditText passwordView;
-
-
+    private RadioGroup radioGroup;
+    private RadioButton genderRadio;
+    private UserRegisterTask registerTask;
+    private View registerFormView;
+    private View progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+
+
         firstnameView = (EditText) findViewById(R.id.firstname);
         surnameView = (EditText) findViewById(R.id.surname);
         emailView = (EditText) findViewById(R.id.email);
+        usernameView = (EditText) findViewById(R.id.username);
         passwordView = (EditText) findViewById(R.id.password);
+        radioGroup = (RadioGroup) findViewById(R.id.gender_group);
+        registerFormView = findViewById(R.id.register_form);
+        progressView = findViewById(R.id.register_progress);
+
+        genderRadio =  (RadioButton) findViewById(radioGroup.getCheckedRadioButtonId());
 
         Button registerButton = (Button) findViewById(R.id.register_button);
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,10 +87,19 @@ public class RegisterActivity extends Activity {
     }
 
     private void attemptRegister(){
+
+
         String firstname = firstnameView.getText().toString();
         String surname = surnameView.getText().toString();
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
+        String username = usernameView.getText().toString();
+        String gender = genderRadio.getText().toString();
+        if(gender.equals("Male"))
+            gender = "m";
+        else gender = "f";
+
+
         Boolean valid = true;
 
         if(!isNameValid(firstname)){
@@ -85,29 +119,96 @@ public class RegisterActivity extends Activity {
             valid = false;
         }
 
-        if(valid && isEmailUnique(email)){
-            LoginActivity.addUser(email+":"+password);
+        //TODO: check whether username and email already exist.
 
-            SaveSharedPreference.setUserName(getApplicationContext(),email);
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            Toast.makeText(getApplicationContext(),email, Toast.LENGTH_SHORT).show();
-            finish();
+        if(valid){
+            showProgress(true);
+            registerTask = new UserRegisterTask(firstname,surname,email,username,password,gender);
+            registerTask.execute((Void) null);
+
+
         }
     }
 
-    private boolean isEmailUnique(String email){
-        //TODO:Replace this logic once database has been setup
-        String[] credentials = LoginActivity.getCredentials();
-        for (String credential : credentials) {
-            String[] pieces = credential.split(":");
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
 
-            if (pieces[0].equals(email)) {
-                // Account exists, return false.
+        private final String firstname;
+        private final String surname;
+        private final String email;
+        private final String username;
+        private final String password;
+        private final String gender;
+        private DatabaseConnection dbConnection = null;
+
+
+        public UserRegisterTask(String firstname, String surname, String email, String username, String password, String gender) {
+            this.firstname = firstname;
+            this.surname = surname;
+            this.email = email;
+            this.username = username;
+            this.password = password;
+            this.gender = gender;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            if(!RegisterUtils.isUsernameUnique(username)){
+
+                usernameView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        usernameView.setError(getString((R.string.error_username_taken)));
+                    }
+                });
 
                 return false;
             }
+            if(!RegisterUtils.isEmailUnique(email)){
+
+                emailView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        emailView.setError(getString((R.string.error_email_taken)));
+                    }
+                });
+                return false;
+            }
+
+            return RegisterUtils.registerUser(firstname, surname, email, username, password, gender); //Attempted to create new user. If it fails, it will return false.
         }
-        return true;
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            registerTask = null;
+            showProgress(false);
+            if (success) {
+                //If login was successful set SharedPreference to store login credentials.
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            showProgress(false);
+            registerTask = null;
+        }
+
+
+    }
+
+    public void showToast(final String toast)
+    {
+        runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(RegisterActivity.this, toast, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean isNameValid(String name){
@@ -123,6 +224,38 @@ public class RegisterActivity extends Activity {
 
     private boolean isPasswordValid(String password){
         //TODO: Create validation logic
-        return true;
+        return password.length() > 4;
+    }
+
+    public void showProgress(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+            registerFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            registerFormView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    registerFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                }
+            });
+
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            registerFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 }

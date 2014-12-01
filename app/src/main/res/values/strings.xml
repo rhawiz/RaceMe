@@ -48,4 +48,13 @@
 
     <string name="error_invalid_name">This name is invalid</string>
 
+
+    <!-- Strings related to race -->
+
+    <string name="race_session_notification_ticker">Tracking route</string>
+    <string name="race_session_notification_title">Tracking route</string>
+    <string name="race_session_notification_text">Race session has begun and is currently tracking your route</string>
+    <string name="error_username_taken">The username has been taken!</string>
+    <string name="error_email_taken">This email is already registered!</string>
+
 </resources>
