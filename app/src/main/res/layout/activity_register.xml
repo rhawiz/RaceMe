@@ -29,7 +29,9 @@
                 android:id="@+id/firstname"
                 android:layout_row="0"
                 android:layout_column="0"
-                android:hint="First name"/>
+                android:hint="First name"
+                android:textColor="@color/white"
+                />
 
             <EditText
                 android:layout_width="match_parent"
@@ -40,6 +42,7 @@
                 android:layout_row="1"
                 android:layout_column="0"
                 android:hint="Surname"
+                android:textColor="@color/white"
                 android:paddingTop="@dimen/custom_y_padding_1"/>
 
             <EditText
@@ -50,6 +53,7 @@
                 android:layout_row="2"
                 android:layout_column="0"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/white"
                 android:hint="Email"
                 android:paddingTop="@dimen/custom_y_padding_1"/>
 
@@ -61,6 +65,7 @@
                 android:layout_row="3"
                 android:layout_column="0"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/white"
                 android:hint="Username"
                 android:paddingTop="@dimen/custom_y_padding_1" />
 
@@ -71,6 +76,7 @@
                 android:ems="10"
                 android:id="@+id/password"
                 android:layout_row="4"
+                android:textColor="@color/white"
                 android:layout_column="0"
                 android:password="false"
                 android:hint="Password"
@@ -89,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="Male"
                     android:ems="7"
+                    android:textColor="@color/white"
                     android:id="@+id/male_radio"
                     android:checked="true" />
 
@@ -96,6 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Female"
+                    android:textColor="@color/white"
                     android:ems="7"
                     android:id="@+id/female_radio" />
             </RadioGroup>
@@ -104,6 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Sign up"
+                android:textColor="@color/white"
                 android:id="@+id/register_button"
                 android:layout_row="6"
                 android:layout_column="0"
