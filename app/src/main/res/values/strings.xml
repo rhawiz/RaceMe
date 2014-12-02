@@ -57,4 +57,14 @@
     <string name="error_username_taken">The username has been taken!</string>
     <string name="error_email_taken">This email is already registered!</string>
 
+    <!-- Strings related to profile page -->
+    <string name="profile_gender">Gender</string>
+    <string name="profile_save">Save</string>
+    <string name="profile_male">Male</string>
+    <string name="profile_female">Female</string>
+    <string name="profile_email_address">Email Address</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_my_challenges">My Challenges</string>
+
+
 </resources>
