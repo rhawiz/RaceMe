@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.GridLayout;
 import android.widget.TabHost;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private TabHost tabHost;
     private Button startButton;
     private Button stopButton;
-    private GridLayout detailTab;
+    private TableLayout detailTab;
     private GridLayout mapTab;
     private TextView distanceTravelledView;
     private TextView averageSpeedView;
@@ -88,7 +89,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
         distanceTravelledView = (TextView) findViewById(R.id.distance_travelled_view);
         averageSpeedView = (TextView) findViewById(R.id.average_speed_view);
-        detailTab = (GridLayout) findViewById(R.id.race_details_tab);
+        detailTab = (TableLayout) findViewById(R.id.race_details_tab);
         mapTab = (GridLayout) findViewById(R.id.race_map_tab);
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -191,11 +192,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         gpsCoordArray = new ArrayList<Location>();
         logSession();
         distanceTravelled = 0;
-        distanceTravelledView.setText("0m");
+        distanceTravelledView.setText("0");
         routePolylineOption = new PolylineOptions().width(5)
                 .color(Color.BLUE)
                 .geodesic(true);
-        routePolyline.remove();
+        if(routePolyline != null)routePolyline.remove();
         map.clear();
         stopService(new Intent(this,RaceService.class));
     }

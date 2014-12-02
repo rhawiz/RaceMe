@@ -45,7 +45,8 @@ public class Authentication {
 
         DatabaseQuery query = new DatabaseQuery(dbConnection , sql_query);
 
-        if(query.getRowCount() >= 1){
+
+        if(query.run() && query.getRowCount() >= 1){
             String user_id = query.get(0,0);
             String username = query.get(0,1);
             String email= query.get(0,2);

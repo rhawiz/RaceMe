@@ -21,47 +21,28 @@ public class RegisterUtils extends Activity{
      * @return true if email is unique and false if not.
      */
     public static boolean isEmailUnique(String email){
-//        DatabaseConnection dbConnection;
-//
-//        try {
-//            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//            return false;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//
-//        String sqlQuery = "SELECT user_table.id FROM coac11.user_table WHERE (email = '" + email + "');";
-//        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection,sqlQuery);
-//
-//        if(dbQuery.getRowCount() == 0){
-//            return true;
-//        }
-//
-//        return false;
 
-        String sqlQuery = "SELECT COUNT(*) FROM coac11.user_table WHERE (email ='" + email + "');";
-
-
+        DatabaseConnection dbConnection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection dbConnection = DriverManager.getConnection("jdbc:mysql://co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
-            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-            resultSet.first();
-            if(resultSet.getInt(1) == 0){
-                dbConnection.close();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            dbConnection = new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        String sqlQuery = "SELECT COUNT(*) FROM coac11.user_table WHERE (email ='" + email + "');";
+
+        DatabaseQuery query = new DatabaseQuery(dbConnection,sqlQuery);
+        if(query.run()){
+            //If the query has run successfully, check the result.
+            if(Integer.parseInt((String) query.get(0,0)) == 0){
+                //The statement returned 0, meaning username is unique. Return true.
+                return true;
+            }
+        }
         return false;
+
     }
 
 
@@ -71,25 +52,27 @@ public class RegisterUtils extends Activity{
      */
     public static boolean isUsernameUnique(String username){
 
-        String sqlQuery = "SELECT COUNT(*) FROM coac11.user_table WHERE (username ='" + username + "');";
-
+        DatabaseConnection dbConnection = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection dbConnection = DriverManager.getConnection("jdbc:mysql://co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
-            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-            resultSet.first();
-            if(resultSet.getInt(1) == 0){
-                dbConnection.close();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            dbConnection = new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        String sqlQuery = "SELECT COUNT(*) FROM coac11.user_table WHERE (username ='" + username + "');";
+
+        DatabaseQuery query = new DatabaseQuery(dbConnection,sqlQuery);
+        if(query.run()){
+            //If the query has run successfully, check the result.
+            if(Integer.parseInt((String) query.get(0,0)) == 0){
+                //The statement returned 0, meaning username is unique. Return true.
+                return true;
+            }
+        }
         return false;
+
     }
 
     /**
@@ -118,16 +101,13 @@ public class RegisterUtils extends Activity{
         String sqlQuery = "INSERT INTO `coac11`.`user_table` (`username`, `email`, `password`, `firstname`, `surname`, `gender`)"
                 +         "             VALUES ('" + username + "', '"+email+ "', '" + password + "', '" + firstname + "', '" + surname +"', '" + gender + "');";
 
-        Statement statement = null;
-        try {
-            statement = dbConnection.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            statement.executeUpdate(sqlQuery);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        DatabaseQuery query = new DatabaseQuery(dbConnection,sqlQuery);
+        if(query.run()){
+            return true;
+        };
+        return false;
 
-        return true;
+
     }
 
     public static User getUserDetails(String login){
@@ -152,7 +132,7 @@ public class RegisterUtils extends Activity{
 
         DatabaseQuery query = new DatabaseQuery(dbConnection , sqlQuery);
 
-        if(query.getRowCount() >= 1) {
+        if(query.run() && query.getRowCount() >= 1) {
             String user_id = query.get(0, 0);
             String username = query.get(0, 1);
             String email = query.get(0, 2);

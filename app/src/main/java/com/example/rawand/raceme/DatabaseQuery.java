@@ -2,7 +2,10 @@ package com.example.rawand.raceme;
 
 /**
  * Created by RAWAND on 29/11/2014.
+ *
  */
+import android.util.Log;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -19,36 +22,69 @@ public class DatabaseQuery {
     int columnCount;
     int rowCount;
     private ArrayList<ArrayList> resultsArray;
+    String queryType;
 
     DatabaseQuery(DatabaseConnection db, String query){
         this.sqlQuery = query;
         this.db = db;
-        run();
+
+        queryType = query.trim().split(" ")[0];
+
 
     }
 
-    private void run(){
-        try {
-            statement = db.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            resultSet = statement.executeQuery(sqlQuery);
-            columnCount = resultSet.getMetaData().getColumnCount();
-            resultSet.last();
-            rowCount = resultSet.getRow();
-            constructArray();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        } catch(NullPointerException e2){
-            e2.printStackTrace();
+    public boolean run(){
+        if(queryType.equals("INSERT")) {
+            try {
+                statement = db.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                statement.executeUpdate(sqlQuery);
+                columnCount = 0;
+                rowCount = 0;
+                constructArray();
+            } catch (SQLException e1) {
+                close();
+                e1.printStackTrace();
+                return false;
+            } catch (NullPointerException e2) {
+                close();
+                e2.printStackTrace();
+                return false;
+            }
+        }else{
+            try {
+                statement = db.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                resultSet = statement.executeQuery(sqlQuery);
+                columnCount = resultSet.getMetaData().getColumnCount();
+                resultSet.last();
+                rowCount = resultSet.getRow();
+                constructArray();
+            } catch (SQLException e1) {
+                close();
+                e1.printStackTrace();
+                return false;
+            } catch (NullPointerException e2) {
+                close();
+                e2.printStackTrace();
+                return false;
+            }
         }
 
 
         //TODO:Find method of ensuring db connection gets closed.
-        //db.close();
+        close();
+        return true;
 
+    }
+
+    public void close(){
+        db.close();
     }
 
     public int getRowCount(){
         return rowCount;
+    }
+    public int getColumnCount(){
+        return columnCount;
     }
 
     public String getSqlQuery() {
@@ -60,15 +96,18 @@ public class DatabaseQuery {
     }
 
     private void constructArray() throws SQLException{
-        resultSet.first();
         resultsArray = new ArrayList<ArrayList>();
-        for(int i=0;i<rowCount;i++){
-            ArrayList temp_array = new ArrayList();
-            for(int j=1;j<=columnCount;j++){
-                temp_array.add(resultSet.getString(resultSet.getMetaData().getColumnName(j)));
+        if(rowCount > 0) {
+        //Only construct array if the query is expecting results. I.E. SELECT only.
+            resultSet.first();
+            for (int i = 0; i < rowCount; i++) {
+                ArrayList temp_array = new ArrayList();
+                for (int j = 1; j <= columnCount; j++) {
+                    temp_array.add(resultSet.getString(resultSet.getMetaData().getColumnName(j)));
+                }
+                resultSet.next();
+                resultsArray.add(temp_array);
             }
-            resultSet.next();
-            resultsArray.add(temp_array);
         }
     }
 

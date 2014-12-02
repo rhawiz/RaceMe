@@ -85,7 +85,6 @@ public class RaceService extends Service  {
 //        }
 //        TimerTask testFunc = new testFunc();
 //        timer.scheduleAtFixedRate(testFunc,0,1000);
-        lastKnownLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
 
         startForeground(serviceID, notification);
 
@@ -122,7 +121,8 @@ public class RaceService extends Service  {
 
     private void startRaceSession(){
 
-        startTime = new Date();
+        startTime = new Date(); //Capture the exact start time
+
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -155,15 +155,26 @@ public class RaceService extends Service  {
 
             }
         };
+
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
+
+
+
         if(networkEnabled) {
             Log.w("RACESERVICE","USING NETWORK");
+            lastKnownLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
         }else if(gpsEnabled) {
             Log.w("RACESERVICE","USING GPS");
+            lastKnownLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+
+        //Send a broadcast with the last known location while waiting for a location update.
+        if(lastKnownLocation != null){
+            sendLocationBroadcast(lastKnownLocation);
         }
     }
 
