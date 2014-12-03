@@ -180,7 +180,7 @@ public class BaseActivity extends Activity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /* We can override onBackPressed method to toggle navigation drawer*/
+    /* We can override onBackPressed method to toggle navigation drawer
     @Override
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(drawerList)){
@@ -188,7 +188,7 @@ public class BaseActivity extends Activity {
         }else {
             drawerLayout.openDrawer(drawerList);
         }
-    }
+    }*/
 
     private void logout(){
         drawerList.setItemChecked(0, true);

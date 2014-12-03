@@ -25,18 +25,18 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="title_activity_challenges">ChallengesActivity</string>
-    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_up">SIGN UP</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
 
 
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Sign In</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in">SIGN IN</string>
+    <string name="action_sign_in_short">SIGN IN</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -73,5 +73,15 @@
     <string name="profile_email_address">Email Address</string>
     <string name="profile_name">Name</string>
     <string name="profile_my_challenges">My Challenges</string>
+
+    <!-- Strings related to profile page -->
+    <string name="profile_gender">Gender</string>
+    <string name="profile_save">Save</string>
+    <string name="profile_male">Male</string>
+    <string name="profile_female">Female</string>
+    <string name="profile_email_address">Email Address</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_my_challenges">My Challenges</string>
+
 
 </resources>

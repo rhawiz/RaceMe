@@ -6,7 +6,8 @@
     <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/challenges_tabhost">
+        android:id="@+id/challenges_tabhost"
+        >
 
         <LinearLayout
             android:layout_width="fill_parent"
