@@ -1,6 +1,7 @@
 package com.example.rawand.raceme;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -29,9 +30,11 @@ public class RaceService extends Service  {
     private static ArrayList<Location> gpsCoordArray  = new ArrayList<Location>();
     private Timer timer;
     private Location lastReceivedLocation;
-    private Location lastKnownLocation;
     private TimerTask timerTask;
     private int distanceTravelled;
+
+    private boolean TESTMODE = false; //True to use mock locations. False to use real location.
+
 
     private Notification notification;
 
@@ -60,31 +63,6 @@ public class RaceService extends Service  {
         // Let it continue running until it is stopped.
         startRaceSession();
         notification = getRaceSessionNotification();
-
-        //TODO:Delete timer function once broadcast receiver has been fixed.
-//        timer = new Timer();
-//
-//        class testFunc extends TimerTask {
-//            double latitude = 52.765538;
-//            double longitude =  -1.219219;
-//            int counter = 0;
-//
-//            public void run() {
-//                Location loc = new Location("location");
-//                loc.setLongitude(longitude);
-//                loc.setLatitude(latitude);
-//
-//                gpsCoordArray.add(loc);
-//                sendLocationBroadcast(loc);
-//                longitude += 0.0001;
-//                counter++;
-//                if(counter % 3 == 0){
-//                    latitude += 0.0001;
-//                }
-//            }
-//        }
-//        TimerTask testFunc = new testFunc();
-//        timer.scheduleAtFixedRate(testFunc,0,1000);
 
         startForeground(serviceID, notification);
 
@@ -123,59 +101,53 @@ public class RaceService extends Service  {
 
         startTime = new Date(); //Capture the exact start time
 
+        if(TESTMODE) {
+            TimerTask testLocationRoute = new testLocationRoute();
+            timer.scheduleAtFixedRate(testLocationRoute,0,1000);
+        }
+        else{
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    if (lastReceivedLocation == null) {
+                        lastReceivedLocation = location;
+                    }
+                    if (location.getAccuracy() >= 2 && lastReceivedLocation.distanceTo(location) >= 10) {
+                        lastReceivedLocation = location;
+                        gpsCoordArray.add(location);
+                        sendLocationBroadcast(location);
 
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-                if(lastReceivedLocation != null && !(lastReceivedLocation.getAccuracy() <= 2) && !(lastReceivedLocation.distanceTo(location) >= 10)){
-                    lastReceivedLocation = location;
-                    gpsCoordArray.add(location);
-                    sendLocationBroadcast(location);
+                    }
 
                 }
-                else{
-                    lastReceivedLocation = location;
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
                 }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+            boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            if(networkEnabled) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+            }else if(gpsEnabled) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-
-
-
-        if(networkEnabled) {
-            Log.w("RACESERVICE","USING NETWORK");
-            lastKnownLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        }else if(gpsEnabled) {
-            Log.w("RACESERVICE","USING GPS");
-            lastKnownLocation = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
 
-        //Send a broadcast with the last known location while waiting for a location update.
-        if(lastKnownLocation != null){
-            sendLocationBroadcast(lastKnownLocation);
-        }
+
     }
 
     public static ArrayList<Location> getGpsCoordArray(){
@@ -198,13 +170,44 @@ public class RaceService extends Service  {
     private void stopRaceSession(){
         super.onDestroy();
         stopForeground(true);
-        //timer.cancel();
+        if(TESTMODE) {
+            timer.cancel();
+        }
         gpsCoordArray = new ArrayList<Location>();
         locationManager.removeUpdates(locationListener);
         locationManager = null;
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         Date now = new Date();
         String totalTime = sdf.format(new Date(now.getTime() - startTime.getTime()));
+    }
+
+
+    class testLocationRoute extends TimerTask {
+        /**
+         * This class will dynamically create a new location object and call a broadcast event.
+         * To be used for testing purposes.
+         */
+        double latitude = 52.765538;
+        double longitude =  -1.219219;
+        int counter = 0;
+
+        public void run() {
+            Location loc = new Location("location");
+            loc.setLongitude(longitude);
+            loc.setLatitude(latitude);
+
+            gpsCoordArray.add(loc);
+            sendLocationBroadcast(loc);
+            longitude += 0.0001;
+            counter++;
+            if(counter % 3 == 0){
+                latitude += 0.0001;
+            }
+        }
+    }
+
+    public void setTestMode(boolean action){
+        TESTMODE = action;
     }
 
 }

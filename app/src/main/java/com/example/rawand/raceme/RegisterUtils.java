@@ -29,6 +29,10 @@ public class RegisterUtils extends Activity{
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
         String sqlQuery = "SELECT COUNT(*) FROM coac11.user_table WHERE (email ='" + email + "');";
@@ -58,6 +62,10 @@ public class RegisterUtils extends Activity{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -96,6 +104,12 @@ public class RegisterUtils extends Activity{
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return false;
         }
 
         String sqlQuery = "INSERT INTO `coac11`.`user_table` (`username`, `email`, `password`, `firstname`, `surname`, `gender`)"
@@ -119,6 +133,12 @@ public class RegisterUtils extends Activity{
             e.printStackTrace();
             userData = new User();
         } catch (SQLException e) {
+            e.printStackTrace();
+            userData = new User();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            userData = new User();
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
             userData = new User();
         }

@@ -15,7 +15,7 @@ public class DatabaseConnection {
     private String password;
     private Connection connect;
 
-    DatabaseConnection(String url, String username, String password) throws ClassNotFoundException, SQLException{
+    DatabaseConnection(String url, String username, String password) throws ClassNotFoundException, SQLException, InstantiationException, IllegalAccessException {
         this.url = url;
         this.username = username;
         this.password = password;
@@ -31,10 +31,9 @@ public class DatabaseConnection {
     }
 
 
-    private void connect() throws ClassNotFoundException, SQLException{
+    private void connect() throws ClassNotFoundException, SQLException, IllegalAccessException, InstantiationException {
 
-        Class.forName("com.mysql.jdbc.Driver");
-
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
         connect = DriverManager.getConnection("jdbc:mysql://"+url,username,password);
 
 

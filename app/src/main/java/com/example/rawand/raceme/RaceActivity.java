@@ -1,10 +1,16 @@
 package com.example.rawand.raceme;
 
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.IntentFilter;
@@ -12,15 +18,23 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -34,8 +48,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,13 +60,22 @@ import java.util.List;
 public class RaceActivity extends BaseActivity implements Serializable {
     //Declare layout fields
     private TabHost tabHost;
-    private Button startButton;
-    private Button stopButton;
+    private ImageButton startButton;
+    private ImageButton stopButton;
     private TableLayout detailTab;
     private GridLayout mapTab;
     private TextView distanceTravelledView;
     private TextView averageSpeedView;
+    private TextView raceStatus;
     private LocationManager locationManager;
+    private Date startTime;
+    private Date endTime;
+
+    private RadioGroup raceTypeRadioGroup;
+
+    private RadioButton walkRadio;
+    private RadioButton runRadio;
+    private RadioButton cycleRadio;
 
     PolylineOptions routePolylineOption;
     Polyline routePolyline;
@@ -62,15 +87,19 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private DataUpdateReceiver dataUpdateReceiver;
     private IntentFilter intentFilter;
 
+    private String raceType;
+
     public LocationClient mLocationClient;
 
     private ArrayList<Location> gpsCoordArray;
     GoogleMap map;
 
+    Handler alertHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+              super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_race, frameLayout);
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
@@ -80,12 +109,15 @@ public class RaceActivity extends BaseActivity implements Serializable {
         initMap();
 
         distanceTravelled = 0;
+        alertHandler = new Handler();
 
         dataUpdateReceiver = new DataUpdateReceiver();
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(RaceService.UPDATE_COORDS_BROADCAST);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+
+        raceStatus = (TextView) findViewById(R.id.race_status);
 
         distanceTravelledView = (TextView) findViewById(R.id.distance_travelled_view);
         averageSpeedView = (TextView) findViewById(R.id.average_speed_view);
@@ -97,32 +129,66 @@ public class RaceActivity extends BaseActivity implements Serializable {
         chronometer = (Chronometer) findViewById(R.id.timer);
         chronometer.setBase(SystemClock.elapsedRealtime());
 
-        startButton = (Button) findViewById(R.id.start_button);
+        raceTypeRadioGroup = (RadioGroup) findViewById(R.id.race_type_radio_group);
+        walkRadio = (RadioButton) findViewById(R.id.walk_radio);
+        runRadio = (RadioButton) findViewById(R.id.run_radio);
+        cycleRadio = (RadioButton) findViewById(R.id.cycle_radio);
+
+        raceTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton selectedButton = (RadioButton) findViewById(raceTypeRadioGroup.getCheckedRadioButtonId());
+                raceType = (String) selectedButton.getText();
+             }
+        });
+
+        startButton = (ImageButton) findViewById(R.id.start_img_button);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
                 boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                String gpsProvider = Settings.Secure.getString(getContentResolver(),
+                        Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 
-                if(!networkEnabled && !gpsEnabled){
-                    Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(gpsOptionsIntent);
+
+                if(!networkEnabled && (!gpsEnabled || gpsProvider.equals(""))){
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RaceActivity.this);
+                    builder.setTitle("Location disabled")
+                            .setMessage("Can't track without location.\nTouch Ok to enable Locations.")
+                            .setCancelable(true)
+                            .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                             })
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(gpsOptionsIntent);
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
+
                 }else {
                     startRaceSession();
-                    startButton.setEnabled(false);
-                    stopButton.setEnabled(true);
+                    startButton.setVisibility(View.GONE);
+                    stopButton.setVisibility(View.VISIBLE);
                 }
             }
         });
 
-        stopButton = (Button) findViewById(R.id.stop_button);
-        stopButton.setEnabled(false);
+        stopButton = (ImageButton) findViewById(R.id.stop_img_button);
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startButton.setEnabled(true);
-                stopButton.setEnabled(false);
+                startButton.setVisibility(View.VISIBLE);
+                stopButton.setVisibility(View.GONE);
                 stopRaceSession();
             }
         });
@@ -148,35 +214,49 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
     private void resumeSession(){
-        startButton.setEnabled(false);
-        stopButton.setEnabled(true);
+        startButton.setVisibility(View.GONE);
+        stopButton.setVisibility(View.VISIBLE);
         Date now = new Date();
         chronometer.setBase( SystemClock.elapsedRealtime() + (RaceService.getStartTime().getTime() - now.getTime()));
         chronometer.start();
         gpsCoordArray = RaceService.getGpsCoordArray();
         this.registerReceiver(dataUpdateReceiver,intentFilter);
         distanceTravelled = RaceUtils.calculateTotalDistance(gpsCoordArray);
-        distanceTravelledView.setText(String.valueOf(distanceTravelled)+"m");
+        distanceTravelledView.setText(String.valueOf(distanceTravelled));
     }
 
     private void updateDistance(){
         if(gpsCoordArray.size() > 1){
             distanceTravelled+=RaceUtils.getDistance(gpsCoordArray.get( gpsCoordArray.size()-2),gpsCoordArray.get(gpsCoordArray.size()-1));
-            distanceTravelledView.setText(String.valueOf(distanceTravelled) + "m");
-            //Log.w("RESUME",gpsCoordArray.toString() + " Array Size");
-            //Log.w("RESUME",String.valueOf(gpsCoordArray.get( gpsCoordArray.size()-2)) + " Parameter 1 value");
-           // Log.w("RESUME",String.valueOf(gpsCoordArray.get( gpsCoordArray.size()-1)) + " Parameter 2 value");
+            distanceTravelledView.setText(String.valueOf(distanceTravelled));
         }
 
     }
 
     private void startRaceSession(){
+        distanceTravelled = 0;
+        distanceTravelledView.setText("0");
+        gpsCoordArray = new ArrayList<Location>();
+        map.clear();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.stop();
+        routePolylineOption = new PolylineOptions().width(5)
+                .color(Color.BLUE)
+                .geodesic(true);
+        if(routePolyline != null)routePolyline.remove();
+
+        startTime = new Date();
+        raceStatus.setText("Started");
+        walkRadio.setEnabled(false);
+        runRadio.setEnabled(false);
+        cycleRadio.setEnabled(false);
+
 
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
         startService(new Intent(this, RaceService.class));
-        gpsCoordArray = RaceService.getGpsCoordArray();
+        gpsCoordArray = new ArrayList<Location>();
         this.registerReceiver(dataUpdateReceiver, intentFilter);
 
         //gpsLoc.setText("Last Location:" + location.getLatitude() + ":" + location.getLongitude());
@@ -185,23 +265,25 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
     private void stopRaceSession(){
-
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        this.unregisterReceiver(dataUpdateReceiver);
-        chronometer.stop();
-        gpsCoordArray = new ArrayList<Location>();
+        Utilities.getAlertDialog(RaceActivity.this,"Route logged.","Well done!\nYour session has been saved.",R.drawable.ic_launcher).show();
+        endTime = new Date();
         logSession();
-        distanceTravelled = 0;
-        distanceTravelledView.setText("0");
-        routePolylineOption = new PolylineOptions().width(5)
-                .color(Color.BLUE)
-                .geodesic(true);
-        if(routePolyline != null)routePolyline.remove();
-        map.clear();
+        raceStatus.setText("Stopped");
+        walkRadio.setEnabled(true);
+        runRadio.setEnabled(true);
+        cycleRadio.setEnabled(true);
+        chronometer.stop();
+        this.unregisterReceiver(dataUpdateReceiver);
         stopService(new Intent(this,RaceService.class));
     }
 
     private void logSession() {
+        String userId = SaveSharedPreference.getUserDetails(this).getUserId();
+        RaceSession session = new RaceSession(userId,raceType,gpsCoordArray,startTime,endTime);
+
+        LogSessionTask logSessionTask = new LogSessionTask(session);
+        logSessionTask.execute();
+
 
     }
 
@@ -296,6 +378,40 @@ public class RaceActivity extends BaseActivity implements Serializable {
             updateDistance();
            // }
         }
+    }
+
+
+    public class LogSessionTask extends AsyncTask<Void, Void, Boolean> {
+
+
+        private DatabaseConnection dbConnection = null;
+        private RaceSession session;
+
+        public LogSessionTask(RaceSession session) {
+            this.session = session;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+
+            return RaceUtils.logRaceSession(session);
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+            if (!success) {
+                RaceUtils.storeRaceSessionLocally(session, RaceActivity.this);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
     }
 
 

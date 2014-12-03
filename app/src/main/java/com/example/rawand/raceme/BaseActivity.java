@@ -20,6 +20,7 @@ import java.util.Set;
 
 
 public class BaseActivity extends Activity {
+
     protected FrameLayout frameLayout;
     protected ListView drawerList;
     protected String[] listArray;

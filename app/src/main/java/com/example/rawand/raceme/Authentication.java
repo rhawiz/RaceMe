@@ -27,6 +27,10 @@ public class Authentication {
             e1.printStackTrace();
         } catch (SQLException e2){
             e2.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
         return false;
     }

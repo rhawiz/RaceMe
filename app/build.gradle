@@ -27,4 +27,5 @@ dependencies {
     compile 'com.android.support:support-v13:21.0.0'
     compile files('libs/mysql-connector-java-5.1.33-bin.jar')
     compile files('libs/gson-2.2.4.jar')
+    compile files('libs/joda-time-2.4.jar')
 }

@@ -2,9 +2,13 @@ package com.example.rawand.raceme;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 
 public class ProfileActivity extends BaseActivity {
@@ -17,6 +21,27 @@ public class ProfileActivity extends BaseActivity {
         setTitle(listArray[position]);
 
         initTabs();
+
+        // Add a click listener to the save button
+        Button button = (Button) findViewById(R.id.save_button);
+        button.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                saveData();
+            }
+        });
+
+        // Get the username from the shared preference and populate the name field
+        TextView firstNameText = (TextView) findViewById(R.id.edit_name);
+        firstNameText.setText( SaveSharedPreference.getUserDetails(this).getFirstname());
+        // Populate the Email field
+        TextView emailText = (TextView) findViewById(R.id.edit_email);
+        emailText.setText( SaveSharedPreference.getUserDetails(this).getEmail() );
+        // Get the gender
+        String gender = SaveSharedPreference.getUserDetails(this).getGender();
+        // Need some logic to determin gender
+
     }
 
     /**
@@ -33,9 +58,9 @@ public class ProfileActivity extends BaseActivity {
         tabSpec.setIndicator("My Profile");
         tabHost.addTab(tabSpec);
 
-        tabSpec = tabHost.newTabSpec("edit_profile");
+        tabSpec = tabHost.newTabSpec("My Profile");
         tabSpec.setContent(R.id.profile_edit_profile_tab);
-        tabSpec.setIndicator("Edit Profile");
+        tabSpec.setIndicator("Challenges");
         tabHost.addTab(tabSpec);
 
 
@@ -59,6 +84,14 @@ public class ProfileActivity extends BaseActivity {
 
 
 
+    }
+    /*
+    ** Save the new profile data
+     */
+    protected void saveData( ){
+
+
+        // Save the new profile data
     }
 
 }

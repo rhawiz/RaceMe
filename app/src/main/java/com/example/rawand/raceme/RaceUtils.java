@@ -4,8 +4,26 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
+import com.google.android.gms.drive.internal.ac;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by RAWAND on 26/11/2014.
@@ -49,5 +67,101 @@ public final class RaceUtils{
         return totalDistance;
     }
 
+    public static boolean logRaceSession(RaceSession session){
+
+        String sqlQuery = session.getSqlInsertStatement();
+
+        DatabaseConnection dbConnection;
+
+        try {
+            //TODO: put these into databaseHelper class
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection,sqlQuery);
+
+        if(dbQuery.run()){
+            return true;
+        }
+        return false;
+    }
+
+    public static void storeRaceSessionLocally(RaceSession session, Activity activity){
+        String filename = "data";
+
+
+
+        Gson gson = new GsonBuilder().create();
+
+        String json = session.getJSON();
+        FileOutputStream outputStream;
+
+        File outFile = new File(activity.getApplicationContext().getFilesDir(), filename);
+
+        if(!outFile.exists()){
+            try {
+                outFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            outputStream = activity.openFileOutput(filename ,Context.MODE_APPEND);
+            outputStream.write(json.getBytes());
+            outputStream.write("\n".getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static ArrayList<RaceSession> getLocalRaceSessions(Activity activity){
+        File file = new File(activity.getApplicationContext().getFilesDir(), "data");
+        ArrayList raceSessionArray = new ArrayList();
+        Gson gson = new Gson();
+
+        if(file.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    try {
+                        RaceSession raceSession = new RaceSession(line);
+                        raceSessionArray.add(raceSession);
+                    } catch (RuntimeException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ;
+
+            Log.w("TEST", raceSessionArray.toString());
+        }
+
+        return raceSessionArray;
+
+    }
+
+    public static void clearLocalRaceSessions(Activity activity){
+        File file = new File(activity.getApplicationContext().getFilesDir(), "data");
+        activity.getApplicationContext().deleteFile("data");
+    }
 
 }

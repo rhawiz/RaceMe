@@ -18,12 +18,12 @@
 
     <style name="CustomTextLarge" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">#676876</item>
-        <item name="android:textSize">60dp</item>
+        <item name="android:textSize">80dp</item>
         <item name="android:typeface">normal</item>
     </style>
     <style name="CustomTextMedium" parent="@android:style/TextAppearance.Large">
         <item name="android:textColor">#676876</item>
-        <item name="android:textSize">40dp</item>
+        <item name="android:textSize">60dp</item>
         <item name="android:typeface">normal</item>
     </style>
 
