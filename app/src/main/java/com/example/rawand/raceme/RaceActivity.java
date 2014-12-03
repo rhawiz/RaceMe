@@ -227,6 +227,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     private void updateDistance(){
         if(gpsCoordArray.size() > 1){
+
             distanceTravelled+=RaceUtils.getDistance(gpsCoordArray.get( gpsCoordArray.size()-2),gpsCoordArray.get(gpsCoordArray.size()-1));
             distanceTravelledView.setText(String.valueOf(distanceTravelled));
         }
