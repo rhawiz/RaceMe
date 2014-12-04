@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,88 +8,108 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:rowCount="3"
-    android:columnCount="2"
-
     tools:context="com.example.rawand.raceme.MainActivity">
 
-    <TextView
-        android:id="@+id/welMsg"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:layout_row="0"
-        android:layout_column="0"
-        android:layout_gravity="center"/>
-
-    <RelativeLayout
-        android:layout_row="0"
-        android:layout_column="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/condIcon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true" />
-
-        <TextView
-            android:id="@+id/temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:layout_toEndOf="@id/condIcon"
-            android:layout_toRightOf="@id/condIcon"
-            android:paddingTop="15dp"
-            android:paddingLeft="10dp"/>
-
-        <TextView
-            android:id="@+id/cityText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/temp"
-            android:layout_toRightOf="@+id/condIcon"
-            android:layout_toEndOf="@+id/condIcon" />
-
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/refreshWeather"
-        android:text="No Internet,\nPress to Retry"
-        android:layout_row="0"
-        android:layout_column="1"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:textColor="@color/white"
-        android:layout_gravity="center"/>
-
-    <Button
-        android:id="@+id/profileButton"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@drawable/profile_button"
-        android:text="Profile"
-        android:gravity="bottom|center"
-        android:textSize="25dp"
-        android:textColor="@color/white"
-        android:paddingBottom="15dp"
-        android:layout_row="1"
-        android:layout_column="0"
-        android:layout_gravity="center" />
-
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Exercise\nNow"
-        android:textSize="25dp"
-        android:id="@+id/exerciseNowButton"
-        android:background = "@drawable/exercisenowbutton"
-        android:layout_row="1"
-        android:layout_column="1"
-        android:textColor="@color/white"
-        android:layout_gravity="center|right" />
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/welMsg"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/condIcon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:id="@+id/temp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:layout_toEndOf="@id/condIcon"
+                    android:layout_toRightOf="@id/condIcon"
+                    android:paddingTop="15dp"
+                    android:paddingLeft="10dp"/>
+
+                <TextView
+                    android:id="@+id/cityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/temp"
+                    android:layout_toRightOf="@+id/condIcon"
+                    android:layout_toEndOf="@+id/condIcon" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/refreshWeather"
+                android:text="No Internet,\nPress to Retry"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp">
+
+            <Button
+                android:id="@+id/profileButton"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:background="@drawable/profile_button"
+                android:text="Profile"
+                android:gravity="bottom|center"
+                android:textSize="25dp"
+                android:textColor="@color/white"
+                android:paddingBottom="15dp"
+                android:layout_gravity="center"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Exercise\nNow"
+                android:textSize="25dp"
+                android:id="@+id/exerciseNowButton"
+                android:background = "@drawable/exercisenowbutton"
+                android:textColor="@color/white"
+                android:layout_gravity="center|right"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <Button
         android:layout_width="match_parent"
@@ -98,8 +119,7 @@
         android:textColor="@color/white"
         android:id="@+id/challengesButton"
         android:padding="35dp"
-        android:layout_row="2"
-        android:layout_column="0"
-        android:layout_columnSpan="2"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="50dp"/>
 
-</GridLayout>
+</RelativeLayout>
