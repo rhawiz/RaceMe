@@ -14,7 +14,6 @@
 
     <TextView
         android:id="@+id/welMsg"
-        android:text="HI,\nSIMON"
         android:textSize="25dp"
         android:textStyle="bold"
         android:layout_row="0"

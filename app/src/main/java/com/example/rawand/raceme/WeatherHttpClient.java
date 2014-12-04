@@ -8,14 +8,14 @@ import java.net.URL;
 
 public class WeatherHttpClient {
 
-    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?";
 
-    public String getWeatherData(String location) {
+    public String getWeatherData(String lat, String lon) {
         HttpURLConnection con = null ;
         InputStream is = null;
 
         try {
-            con = (HttpURLConnection) ( new URL(BASE_URL + location)).openConnection();
+            con = (HttpURLConnection) ( new URL(BASE_URL + "lat=" + lat + "&lon=" + lon)).openConnection();
             con.setRequestMethod("GET");
             con.setDoInput(true);
             con.setDoOutput(true);
@@ -44,5 +44,6 @@ public class WeatherHttpClient {
         return null;
 
     }
+
 
 }
