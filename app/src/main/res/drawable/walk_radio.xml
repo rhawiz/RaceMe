@@ -12,4 +12,4 @@
     <item
         android:drawable="@drawable/walk_default"
        />
-</selector>
+    </selector>
