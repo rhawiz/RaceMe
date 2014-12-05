@@ -153,6 +153,16 @@
                         android:layout_marginTop="10dp"
                         android:textStyle="bold" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/no_requests_textview"
+                        android:layout_marginLeft="10dp"
+                        android:visibility="gone"
+                        android:text="@string/no_requests"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#62000000" />
 
                     <ListView
                         android:layout_width="fill_parent"

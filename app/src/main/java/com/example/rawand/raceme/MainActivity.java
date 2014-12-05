@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
@@ -46,7 +47,13 @@ public class MainActivity extends BaseActivity {
         refreshButton = (Button) findViewById(R.id.refreshWeather);
         welcomeMsg = (TextView) findViewById(R.id.welMsg);
 
-        welcomeMsg.setText("Hi,\n" + SaveSharedPreference.getUserDetails(this).getFirstname());
+
+        User userDetails = SaveSharedPreference.getUserDetails(this);
+        if(userDetails == null){
+            finish();
+        }else{
+            welcomeMsg.setText("Hi,\n" + SaveSharedPreference.getUserDetails(this).getFirstname());
+        }
 
         exerciseButton.setOnClickListener(new OnClickListener() {
 
@@ -117,8 +124,23 @@ public class MainActivity extends BaseActivity {
             LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            String lat = Double.toString(location.getLatitude());
-            String lon = Double.toString(location.getLongitude());
+            if(location == null){
+                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
+
+
+            String lat;
+            String lon;
+
+            if(location != null){
+                lat = Double.toString(location.getLatitude());
+                lon = Double.toString(location.getLongitude());
+            }else{
+                lat = "52.7659373";
+                lon = "-1.2290387";
+            }
+
+
 
             JSONWeatherTask task = new JSONWeatherTask();
             task.execute(new String[]{lat,lon});

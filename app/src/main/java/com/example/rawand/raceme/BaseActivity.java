@@ -119,8 +119,7 @@ public class BaseActivity extends Activity {
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
 
-
-        this.registerReceiver(networkReceiver, intentFilter);
+        registerReceiver(networkReceiver, intentFilter);
 
         if(isLaunch){
             isLaunch = false;
@@ -128,6 +127,37 @@ public class BaseActivity extends Activity {
 
         }
     }
+
+    @Override
+    protected void onResume() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+
+        networkReceiver = new NetworkChangeReceiver(this);
+        registerReceiver(networkReceiver, intentFilter);
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(networkReceiver);
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy(){
+        try {
+            unregisterReceiver(networkReceiver);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
+
 
     /**
      * @param position
@@ -218,6 +248,7 @@ public class BaseActivity extends Activity {
     }*/
 
     private void logout(){
+
         drawerList.setItemChecked(0, true);
         setTitle(listArray[0]);
         drawerLayout.closeDrawer(drawerList);

@@ -171,7 +171,52 @@ public class DatabaseHelper {
 
 
     public static ArrayList<User> getFriendRequestUsers(String userId){
-        return new ArrayList<User>();
+        String sqlQuery = "SELECT user_table.id, user_table.username, user_table.email, user_table.firstname, user_table.surname, user_table.profile_img, user_table.IS_ACTIVE, user_table.gender "+
+        " FROM coac11.user_table WHERE id IN ("+
+                " SELECT user_1_id"+
+        " FROM coac11.friends_table WHERE user_2_id = 23 AND accepted = 0" +
+        " );";
+
+
+        ArrayList<User> userList = new ArrayList<User>();
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(!dbQuery.run()){
+            return userList;
+        }
+
+        for (int i = 0; i < dbQuery.getRowCount(); i++) {
+            ArrayList currentRow = dbQuery.get(i);
+            User user = new User(
+                    (String) currentRow.get(0),
+                    (String) currentRow.get(1),
+                    (String) currentRow.get(2),
+                    (String) currentRow.get(3),
+                    (String) currentRow.get(4),
+                    (String) currentRow.get(5),
+                    (String) currentRow.get(6),
+                    (String) currentRow.get(7)
+            );
+            userList.add(user);
+        }
+
+        return userList;
+
     }
 
     public static boolean updateUser(String id, String email, String firstname, String surname, String profileImg, String gender){

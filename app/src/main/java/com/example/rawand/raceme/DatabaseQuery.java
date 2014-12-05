@@ -34,7 +34,7 @@ public class DatabaseQuery {
     }
 
     public boolean run(){
-        if(queryType.equals("INSERT")) {
+        if(queryType.equals("INSERT") ||queryType.equals("UPDATE")) {
             try {
                 statement = db.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 statement.executeUpdate(sqlQuery);
@@ -50,7 +50,8 @@ public class DatabaseQuery {
                 e2.printStackTrace();
                 return false;
             }
-        }else{
+        }
+        else{
             try {
                 statement = db.getConnection().createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
                 resultSet = statement.executeQuery(sqlQuery);

@@ -1,6 +1,7 @@
 package com.example.rawand.raceme;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ProfileActivity extends BaseActivity {
@@ -89,9 +91,68 @@ public class ProfileActivity extends BaseActivity {
     ** Save the new profile data
      */
     protected void saveData( ){
-
-
+        SaveDatatoDBTask task = new SaveDatatoDBTask("21","aaa","bb","cc","dd","ee");
+        task.execute();
         // Save the new profile data
+    }
+
+    public class SaveDatatoDBTask extends AsyncTask<Void, Void, Boolean> {
+        private String id;
+        private String email;
+        private String firstname;
+        private String surname;
+        private String profileImg;
+        private String gender;
+
+        public SaveDatatoDBTask(String userId,
+                                String userEmail,
+                                String firstname,
+                                String surname,
+                                String profileImg,
+                                String gender) {
+            this.id = userId;
+            this.email = userEmail;
+            this.firstname = firstname;
+            this.surname = surname;
+            this.profileImg = profileImg;
+            this.gender = gender;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            if(DatabaseHelper.updateUser(id,
+                    email,
+                    firstname,
+                    surname,
+                    profileImg,
+                    gender))
+                return true;
+
+            return false;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if(success) {
+                Toast.makeText(getApplicationContext(),
+                        "Changes saved!", Toast.LENGTH_SHORT)
+                        .show();
+            }else{
+                Toast.makeText(getApplicationContext(),
+                        "Changes not saved, have you got network?", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
     }
 
 }

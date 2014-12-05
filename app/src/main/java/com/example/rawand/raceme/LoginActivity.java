@@ -310,6 +310,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 }else{
                     userDetails = authentication.getUser();
                 }
+
+                Log.w("LoginActivity",userDetails.toString());
                 SaveSharedPreference.setUserDetails(getApplicationContext(), userDetails);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();

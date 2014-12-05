@@ -99,7 +99,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-              super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_race, frameLayout);
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
@@ -156,7 +156,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(RaceActivity.this);
                     builder.setTitle("Location disabled")
-                            .setMessage("Can't track without location.\nTouch Ok to enable Locations.")
+                            .setMessage("Please enable Locations.")
                             .setCancelable(true)
                             .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {

@@ -32,13 +32,20 @@ public class FriendsActivity extends BaseActivity {
     private User currentUser;
     private ArrayList<User> userList;
     private ArrayList<User> friendsList;
-    private UserArrayAdapter friendsAdapter;
+    private ArrayList<User> friendRequests;
+    private UserArrayAdapter friendListAdapter;
     private ListView friendsListView;
-    private UserArrayAdapter usersAdapter;
+    private UserArrayAdapter userSearchAdapter;
     private TextView noFriendsView;
+    private TextView noRequestsView;
     private Button clearFriendSearchButton;
     private ImageButton addFriendButton;
     private AdapterView.OnItemClickListener findFriendsTextListener;
+
+    private ListView friendRequestsListView;
+    private UserArrayAdapter friendRequestsAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,12 @@ public class FriendsActivity extends BaseActivity {
 
         initTabs();
 
+        currentUser = SaveSharedPreference.getUserDetails(FriendsActivity.this);
+
+
+        final InitFriendsScreenTask friendsScreenTask = new InitFriendsScreenTask();
+        friendsScreenTask.execute();
+
         initFriendsTab();
         initRequestsTab();
 
@@ -56,27 +69,21 @@ public class FriendsActivity extends BaseActivity {
     }
 
     private void initRequestsTab(){
+        friendRequestsListView = (ListView) findViewById(R.id.friend_requests_list_view);
+        noRequestsView = (TextView) findViewById(R.id.no_requests_textview);
 
     }
 
 
     private void initFriendsTab(){
-        currentUser = SaveSharedPreference.getUserDetails(FriendsActivity.this);
 
         friendSearchView = (AutoCompleteTextView) findViewById(R.id.find_friend_textview);
-
-
-        final InitFriendsScreenTask friendsScreenTask = new InitFriendsScreenTask();
-        friendsScreenTask.execute();
-
-
-
 
         findFriendsTextListener = new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                selectedUser = usersAdapter.getItem(pos);
+                selectedUser = userSearchAdapter.getItem(pos);
                 friendSearchView.setEnabled(false);
             }
         };
@@ -199,9 +206,13 @@ public class FriendsActivity extends BaseActivity {
             userList = DatabaseHelper.getNotFriendsList(userId);
             friendsList = DatabaseHelper.getFriendsList(userId);
 
-            usersAdapter = new UserArrayAdapter(FriendsActivity.this,android.R.layout.select_dialog_item, userList);
+            friendRequests = DatabaseHelper.getFriendRequestUsers(userId);
 
-            friendsAdapter = new UserArrayAdapter(FriendsActivity.this,android.R.layout.simple_list_item_1, friendsList);
+            friendRequestsAdapter = new UserArrayAdapter(FriendsActivity.this,android.R.layout.simple_list_item_1, friendRequests);
+
+            userSearchAdapter = new UserArrayAdapter(FriendsActivity.this,android.R.layout.select_dialog_item, userList);
+
+            friendListAdapter = new UserArrayAdapter(FriendsActivity.this,android.R.layout.simple_list_item_1, friendsList);
 
             return true;
 
@@ -212,11 +223,18 @@ public class FriendsActivity extends BaseActivity {
         protected void onPostExecute(final Boolean success) {
             if(success) {
 
-                friendSearchView.setAdapter(usersAdapter);
+                friendSearchView.setAdapter(userSearchAdapter);
 
-                friendsListView.setAdapter(friendsAdapter);
+                friendsListView.setAdapter(friendListAdapter);
 
-                if(friendsAdapter.getCount() == 0){
+                friendRequestsListView.setAdapter(friendRequestsAdapter);
+
+                if(friendRequestsListView.getCount() == 0){
+                    noRequestsView.setVisibility(View.VISIBLE);
+                    friendRequestsListView.setVisibility(View.GONE);
+                }
+
+                if(friendListAdapter.getCount() == 0){
                     noFriendsView.setVisibility(View.VISIBLE);
                     friendsListView.setVisibility(View.GONE);
                 }

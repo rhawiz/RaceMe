@@ -66,6 +66,14 @@
             android:name="com.example.rawand.raceme.RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
+        <activity
+            android:name="com.example.rawand.raceme.SettingsActivity"
+            android:label="@string/title_activity_settings" />
+
+        <activity
+            android:name="com.example.rawand.raceme.FriendsActivity"
+            android:label="@string/title_activity_friends" >
+        </activity>
 
         <service
             android:name="com.example.rawand.raceme.RaceService"
@@ -84,17 +92,8 @@
             android:exported="true" >
         </receiver>
 
-        <activity
-            android:name="com.example.rawand.raceme.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
-            android:name="com.example.rawand.raceme.FriendsActivity"
-            android:label="@string/title_activity_friends"
-            android:parentActivityName="com.example.rawand.raceme.BaseActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.rawand.raceme.BaseActivity" />
-        </activity>
+
+
     </application>
 
 </manifest>
