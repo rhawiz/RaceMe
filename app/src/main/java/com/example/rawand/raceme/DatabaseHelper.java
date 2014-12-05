@@ -174,8 +174,7 @@ public class DatabaseHelper {
         String sqlQuery = "SELECT user_table.id, user_table.username, user_table.email, user_table.firstname, user_table.surname, user_table.profile_img, user_table.IS_ACTIVE, user_table.gender "+
         " FROM coac11.user_table WHERE id IN ("+
                 " SELECT user_1_id"+
-        " FROM coac11.friends_table WHERE user_2_id = 23 AND accepted = 0" +
-        " );";
+        " FROM coac11.friends_table WHERE user_2_id = " + userId +" AND accepted = 0);";
 
 
         ArrayList<User> userList = new ArrayList<User>();
@@ -217,6 +216,35 @@ public class DatabaseHelper {
 
         return userList;
 
+    }
+
+    public static boolean acceptFriendRequest(String senderId, String receiverId){
+        String sqlQuery = "UPDATE coac11.friends_table SET accepted=1 WHERE (user_1_id= " + senderId + " AND user_2_id = " + receiverId + ");";
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(dbQuery.run()){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean acceptFriendRequest(User senderUser, User receiverUser){
+        return acceptFriendRequest(senderUser.getUserId(),receiverUser.getUserId());
     }
 
     public static boolean updateUser(String id, String email, String firstname, String surname, String profileImg, String gender){

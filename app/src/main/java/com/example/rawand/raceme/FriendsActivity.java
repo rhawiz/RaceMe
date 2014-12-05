@@ -1,7 +1,9 @@
 package com.example.rawand.raceme;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,6 +73,23 @@ public class FriendsActivity extends BaseActivity {
     private void initRequestsTab(){
         friendRequestsListView = (ListView) findViewById(R.id.friend_requests_list_view);
         noRequestsView = (TextView) findViewById(R.id.no_requests_textview);
+
+        friendRequestsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(FriendsActivity.this)
+                        .setTitle("Confirm request")
+                        .setMessage("Do you wish to add " + friendRequestsAdapter.getItem(position).getFirstname() + " as friend?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                AcceptFriendRequestTask acceptRequest = new AcceptFriendRequestTask(friendRequestsAdapter.getItem(position),currentUser);
+                                acceptRequest.execute();
+                            }})
+                        .setNegativeButton("Reject", null).show();
+            }
+        });
 
     }
 
@@ -276,6 +295,85 @@ public class FriendsActivity extends BaseActivity {
                 Utilities.showToast("Friend request sent.", Toast.LENGTH_LONG,FriendsActivity.this);
             }else{
                 Utilities.showToast("Could not send friend request. Possible network issue.", Toast.LENGTH_LONG,FriendsActivity.this);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
+    }
+
+
+    public class AcceptFriendRequestTask extends AsyncTask<Void, Void, Boolean> {
+
+        private User userSender;
+        private User userReceiver;
+
+        public AcceptFriendRequestTask(User userSender, User userReceiver) {
+            this.userSender = userSender;
+            this.userReceiver = userReceiver;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            if(DatabaseHelper.acceptFriendRequest(userSender, userReceiver))
+                return true;
+
+            return false;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if(success) {
+                Utilities.showToast("Friend request accepted.", Toast.LENGTH_LONG,FriendsActivity.this);
+                finish();
+                startActivity(getIntent());
+//                ArrayList<User> newFriendsList = new ArrayList<User>();
+//
+//                newFriendsList.addAll(friendsList);
+//                newFriendsList.add(userReceiver);
+//
+//                friendsList = newFriendsList;
+//
+//                ArrayList<User> newFriendRequestList = new ArrayList<User>();
+//                for (int i = 0; i < friendRequests.size(); i++) {
+//                    if(!friendRequests.get(i).getUserId().equals(userReceiver.getUserId())){
+//                        newFriendRequestList.add(friendRequests.get(i));
+//                    }
+//                }
+//
+//                friendRequests = newFriendRequestList;
+//
+//
+//
+//                friendRequestsAdapter.clear();
+//                friendRequestsAdapter.addAll(friendRequests);
+//                friendRequestsAdapter.notifyDataSetChanged();
+//
+//                if(friendRequests.size() == 0){
+//                    noRequestsView.setVisibility(View.VISIBLE);
+//                    friendRequestsListView.setVisibility(View.GONE);
+//                }
+//
+//
+//
+//                friendsListView.setVisibility(View.VISIBLE);
+//                noFriendsView.setVisibility(View.GONE);
+//
+//                friendListAdapter.clear();
+//                friendListAdapter.addAll(friendsList);
+//                friendListAdapter.notifyDataSetChanged();
+
+
+
+            }else{
+                Utilities.showToast("Could not accept friend request. Possible network issue.", Toast.LENGTH_LONG,FriendsActivity.this);
             }
         }
 

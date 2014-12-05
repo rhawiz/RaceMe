@@ -30,7 +30,6 @@ public class DatabaseQuery {
 
         queryType = query.trim().split(" ")[0];
 
-
     }
 
     public boolean run(){
