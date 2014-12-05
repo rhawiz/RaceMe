@@ -1,12 +1,17 @@
 package com.example.rawand.raceme;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.Set;
 
 
 public class BaseActivity extends Activity {
@@ -28,6 +31,7 @@ public class BaseActivity extends Activity {
     private static boolean isLaunch = true;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NetworkChangeReceiver networkReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +107,19 @@ public class BaseActivity extends Activity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
 
+        //Check if we need to upload any local session data
+        new UploadLocalSessionDataTask(this).execute();
+
+        //Register a network change receiver to perform any actions needed
+
+        networkReceiver = new NetworkChangeReceiver(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+
+        this.registerReceiver(networkReceiver,intentFilter);
+
         if(isLaunch){
             isLaunch = false;
             openActivity(0);
@@ -135,6 +152,9 @@ public class BaseActivity extends Activity {
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case 4:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case 5:
                 logout();
                 break;
 
@@ -161,6 +181,7 @@ public class BaseActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
+                openActivity(4);
                 return true;
             case R.id.action_logout:
                 logout();
@@ -195,9 +216,76 @@ public class BaseActivity extends Activity {
         setTitle(listArray[0]);
         drawerLayout.closeDrawer(drawerList);
         BaseActivity.position = 0;
+        //this.unregisterReceiver(networkReceiver);
         SaveSharedPreference.setUserDetails(getApplicationContext(), null);
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
     }
+
+    public static class NetworkChangeReceiver extends BroadcastReceiver {
+        Activity activity;
+
+        public NetworkChangeReceiver(){
+        }
+
+        public NetworkChangeReceiver(Activity activity){
+            this.activity = activity;
+        }
+
+        @Override
+        public void onReceive(Context context,Intent intent) {
+            int status = NetworkUtil.getConnectivityStatusString(context);
+            ConnectivityManager manager = (ConnectivityManager) activity.getSystemService(CONNECTIVITY_SERVICE);
+            //For 3G check
+            boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
+            //For WiFi Check
+            boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+            if (!"android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
+                if(status!=NetworkUtil.NETWORK_STATUS_NOT_CONNECTED && (is3g || isWifi)){
+                    if(RaceUtils.getLocalRaceSessions(activity).size() > 0) {
+                        UploadLocalSessionDataTask uploadTask = new UploadLocalSessionDataTask(activity);
+                        uploadTask.execute();
+                    }
+                }
+
+            }
+        }
+    }
+
+    public static class UploadLocalSessionDataTask extends AsyncTask<Void, Void, Boolean> {
+        Activity activity;
+
+
+        public UploadLocalSessionDataTask(){
+            super();
+        }
+
+        public UploadLocalSessionDataTask(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Log.w("RACESESSION",String.valueOf(RaceUtils.getLocalRaceSessions(activity).size() ));
+
+                return Utilities.uploadLocalSessions(activity);
+
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
+    }
+
 
 
 }

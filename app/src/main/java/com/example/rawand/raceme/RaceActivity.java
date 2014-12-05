@@ -165,7 +165,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
                              })
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    Intent gpsOptionsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                     startActivity(gpsOptionsIntent);
                                     dialog.cancel();
                                 }
@@ -216,10 +216,19 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private void resumeSession(){
         startButton.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
+
+
         Date now = new Date();
         chronometer.setBase( SystemClock.elapsedRealtime() + (RaceService.getStartTime().getTime() - now.getTime()));
         chronometer.start();
         gpsCoordArray = RaceService.getGpsCoordArray();
+
+        for (Location i : gpsCoordArray) {
+            routePolylineOption.add(new LatLng(i.getLatitude(), i.getLongitude())); // Closes the polyline.
+        }
+
+        routePolyline = map.addPolyline(routePolylineOption);
+
         this.registerReceiver(dataUpdateReceiver,intentFilter);
         distanceTravelled = RaceUtils.calculateTotalDistance(gpsCoordArray);
         distanceTravelledView.setText(String.valueOf(distanceTravelled));
@@ -266,7 +275,8 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
     private void stopRaceSession(){
-        Utilities.getAlertDialog(RaceActivity.this,"Route logged.","Well done!\nYour session has been saved.",R.drawable.ic_launcher).show();
+        //Utilities.getAlertDialog(RaceActivity.this,"Route logged.","Well done!\nYour session has been saved.",R.drawable.ic_launcher).show();
+
         endTime = new Date();
         logSession();
         raceStatus.setText("Stopped");
@@ -352,7 +362,6 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
     public class DataUpdateReceiver extends BroadcastReceiver {
-        //TODO:Fix broadcast receiver
         public DataUpdateReceiver() {
         }
 
@@ -403,7 +412,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         protected void onPostExecute(final Boolean success) {
 
             if (!success) {
+                Utilities.showToast("Could not find network connection.",Toast.LENGTH_LONG,RaceActivity.this);
                 RaceUtils.storeRaceSessionLocally(session, RaceActivity.this);
+            }else{
+                Utilities.showToast("Race session has been logged.",Toast.LENGTH_LONG,RaceActivity.this);
+
             }
         }
 

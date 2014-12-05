@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity {
         welcomeMsg = (TextView) findViewById(R.id.welMsg);
 
         welcomeMsg.setText("Hi,\n" + SaveSharedPreference.getUserDetails(this).getFirstname());
+
         exerciseButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -132,13 +133,17 @@ public class MainActivity extends BaseActivity {
 
         @Override
         protected Weather doInBackground(String... params) {
-            Weather weather = new Weather();
+
+            Weather weather = null;
+
             String data = ( (new WeatherHttpClient()).getWeatherData(params[0], params[1]));
 
             try {
                 weather = JSONWeatherParser.getWeather(data);
 
             } catch (JSONException e) {
+                e.printStackTrace();
+            } catch(NullPointerException e){
                 e.printStackTrace();
             }
             return weather;
@@ -149,15 +154,23 @@ public class MainActivity extends BaseActivity {
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
 
-            cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
-            //condDesc.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
-            temp.setText("" + Math.round((weather.temperature.getTemp() - 273.15)) + "°C");
+            if (weather != null) {
 
-            iconImg = "icon_" + weather.currentCondition.getIcon();
+                cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
+                //condDesc.setText(weather.currentCondition.getCondition() + "(" + weather.currentCondition.getDescr() + ")");
+                temp.setText("" + Math.round((weather.temperature.getTemp() - 273.15)) + "°C");
 
-            imgView.setImageResource(getResources().getIdentifier(iconImg, "drawable", getPackageName()));
+                iconImg = "icon_" + weather.currentCondition.getIcon();
+
+                imgView.setImageResource(getResources().getIdentifier(iconImg, "drawable", getPackageName()));
+
+            } else {
+
+                refreshButton.setVisibility(View.VISIBLE);
+                Toast.makeText(getApplicationContext(), "Unable to Retrieve Weather!", Toast.LENGTH_LONG).show();
+
+            }
         }
-
     }
 
 }

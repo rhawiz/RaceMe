@@ -15,6 +15,7 @@
         <item>Race</item>
         <item>Challenges</item>
         <item>Profile</item>
+        <item>Settings</item>
         <item>Logout</item>
     </string-array>
 
@@ -73,7 +74,9 @@
     <string name="profile_email_address">Email Address</string>
     <string name="profile_name">Name</string>
     <string name="profile_my_challenges">My Challenges</string>
+    <string name="title_activity_settings">Settings</string>
 
+    <string name="no_friends">You currently don\'t have any friends added.\nLook for friends by searching above!</string>
 
 
 </resources>

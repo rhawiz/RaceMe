@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -56,9 +57,33 @@ public class Utilities {
         return formatter.parseDateTime(strDate).toDate();
     }
 
-    public static void attemptLocalSessionUpload(Activity activity){
+    public static boolean uploadLocalSessions(Activity activity){
         //TODO:COMPLETE THIS AND CALL IN BaseActivity
-        //RaceUtils.getLocalRaceSessions();
+        ArrayList<RaceSession> localRaceSessions = RaceUtils.getLocalRaceSessions(activity);
+        ArrayList<RaceSession> raceSessionsFailedUploads = new ArrayList<RaceSession>();
+        for (int i = 0; i < localRaceSessions.size(); i++) {
+            if(!RaceUtils.logRaceSession(localRaceSessions.get(i))){
+                raceSessionsFailedUploads.add(localRaceSessions.get(i));
+            }
+        }
+
+        RaceUtils.clearLocalRaceSessions(activity);
+        if(raceSessionsFailedUploads.size() > 0){
+            for (int i = 0; i < raceSessionsFailedUploads.size(); i++) {
+                RaceUtils.storeRaceSessionLocally(raceSessionsFailedUploads.get(i),activity);
+            }
+        }
+
+        if(localRaceSessions.size() - raceSessionsFailedUploads.size() == 0){
+            return false;
+        }
+
+        return true;
+    }
+
+    public static void showToast(String msg, int len, Activity activity){
+        Toast.makeText(activity.getApplicationContext(), msg,
+                len).show();
     }
 
 }

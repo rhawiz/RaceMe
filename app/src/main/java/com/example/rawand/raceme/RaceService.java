@@ -113,7 +113,7 @@ public class RaceService extends Service  {
                     if (lastReceivedLocation == null) {
                         lastReceivedLocation = location;
                     }
-                    if (location.getAccuracy() >= 2 && lastReceivedLocation.distanceTo(location) >= 10) {
+                    if (location.getAccuracy() >= 2 && !(lastReceivedLocation.distanceTo(location) >= 100)) {
                         lastReceivedLocation = location;
                         gpsCoordArray.add(location);
                         sendLocationBroadcast(location);

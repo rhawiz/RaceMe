@@ -97,7 +97,7 @@ public final class RaceUtils{
         return false;
     }
 
-    public static void storeRaceSessionLocally(RaceSession session, Activity activity){
+    public static boolean storeRaceSessionLocally(RaceSession session, Activity activity){
         String filename = "data";
 
 
@@ -114,6 +114,7 @@ public final class RaceUtils{
                 outFile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
         }
 
@@ -121,16 +122,26 @@ public final class RaceUtils{
             outputStream = activity.openFileOutput(filename ,Context.MODE_APPEND);
             outputStream.write(json.getBytes());
             outputStream.write("\n".getBytes());
+            Log.w("RaceUtils",outputStream.toString());
             outputStream.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
+        return true;
 
     }
 
     public static ArrayList<RaceSession> getLocalRaceSessions(Activity activity){
+
+        if(activity == null) {
+            return new ArrayList<RaceSession>();
+        }
+
         File file = new File(activity.getApplicationContext().getFilesDir(), "data");
+
         ArrayList raceSessionArray = new ArrayList();
         Gson gson = new Gson();
 
@@ -151,8 +162,6 @@ public final class RaceUtils{
                 e.printStackTrace();
             }
             ;
-
-            Log.w("TEST", raceSessionArray.toString());
         }
 
         return raceSessionArray;
