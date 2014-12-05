@@ -32,6 +32,7 @@ public class BaseActivity extends Activity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NetworkChangeReceiver networkReceiver;
+    private IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class BaseActivity extends Activity {
             }
         });
 
-        //If the user is not set (i.e. not logged in), call the logout method.
+        //If the user is not set (i.e. not logged in), call the logout method
         if(SaveSharedPreference.getUserDetails(this) == null){
             logout();
         }
@@ -113,12 +114,13 @@ public class BaseActivity extends Activity {
         //Register a network change receiver to perform any actions needed
 
         networkReceiver = new NetworkChangeReceiver(this);
-        IntentFilter intentFilter = new IntentFilter();
+        intentFilter = new IntentFilter();
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
 
-        this.registerReceiver(networkReceiver,intentFilter);
+
+        this.registerReceiver(networkReceiver, intentFilter);
 
         if(isLaunch){
             isLaunch = false;
@@ -126,6 +128,7 @@ public class BaseActivity extends Activity {
 
         }
     }
+
     /**
      * @param position
      *
@@ -152,9 +155,12 @@ public class BaseActivity extends Activity {
                 startActivity(new Intent(this, ProfileActivity.class));
                 break;
             case 4:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, FriendsActivity.class));
                 break;
             case 5:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case 6:
                 logout();
                 break;
 

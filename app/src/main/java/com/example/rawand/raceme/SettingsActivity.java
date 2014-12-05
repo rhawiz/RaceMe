@@ -29,7 +29,7 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.activity_challenges, frameLayout);
+        getLayoutInflater().inflate(R.layout.activity_settings, frameLayout);
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
 

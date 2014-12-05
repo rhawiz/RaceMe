@@ -78,7 +78,6 @@
             android:enabled="true"
             android:exported="true" >
         </receiver>
-
         <receiver
             android:name="com.example.rawand.raceme.BaseActivity$NetworkChangeReceiver"
             android:enabled="true"
@@ -87,8 +86,15 @@
 
         <activity
             android:name="com.example.rawand.raceme.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
-
+            android:label="@string/title_activity_settings" />
+        <activity
+            android:name="com.example.rawand.raceme.FriendsActivity"
+            android:label="@string/title_activity_friends"
+            android:parentActivityName="com.example.rawand.raceme.BaseActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.rawand.raceme.BaseActivity" />
+        </activity>
     </application>
 
 </manifest>

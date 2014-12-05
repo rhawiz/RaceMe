@@ -125,8 +125,7 @@
                             android:id="@+id/race_time_label"
                             android:layout_column="0"
                             android:layout_span="7"
-                            android:layout_gravity="center|top"
-                            android:textColor="#4a000000" />
+                            android:layout_gravity="center|top" />
                     </TableRow>
 
                     <TableRow
@@ -152,8 +151,7 @@
                             android:text="M"
                             android:id="@+id/distance_travelled_unit"
                             android:layout_column="1"
-                            android:layout_gravity="bottom|center|left"
-                            android:textColor="#676876" />
+                            android:layout_gravity="bottom|center|left" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -172,8 +170,7 @@
                             android:text="km/h"
                             android:id="@+id/average_speed_unit"
                             android:layout_column="3"
-                            android:layout_gravity="bottom"
-                            android:textColor="#676876" />
+                            android:layout_gravity="bottom" />
                     </TableRow>
 
                     <TableRow
@@ -189,18 +186,16 @@
                             android:id="@+id/race_distance_label"
                             android:layout_column="0"
                             android:layout_gravity="center"
-                            android:layout_span="2"
-                            android:textColor="#4a000000" />
+                            android:layout_span="2" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Speed"
+                            android:text="Avg. Speed"
                             android:id="@+id/race_speed_label"
                             android:layout_column="2"
                             android:layout_gravity="center|top"
-                            android:textColor="#4a000000"
                             android:layout_span="2" />
                     </TableRow>
 

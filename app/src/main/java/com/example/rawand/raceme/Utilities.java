@@ -81,9 +81,16 @@ public class Utilities {
         return true;
     }
 
-    public static void showToast(String msg, int len, Activity activity){
-        Toast.makeText(activity.getApplicationContext(), msg,
-                len).show();
+    public static void showToast(final String msg, final int len,final Activity activity){
+        activity.runOnUiThread(new Runnable() {
+            public void run()
+            {
+                Toast.makeText(activity.getApplicationContext(), msg,
+                        len).show();
+            }
+        });
+
+
     }
 
 }

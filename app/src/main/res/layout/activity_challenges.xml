@@ -10,119 +10,20 @@
         >
 
         <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <TabWidget
+            android:id="@android:id/tabs"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:focusable="false"></TabWidget>
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"></TabWidget>
-
-            <FrameLayout
+        <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
-                <LinearLayout
-
-                    android:layout_weight="1"
-                    android:id="@+id/challenges_friend_tab"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:rowOrderPreserved="false"
-                    android:columnOrderPreserved="false"
-                    android:clickable="false">
-
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp">
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp"
-                            android:layout_toLeftOf="@+id/add_friend_button"
-                            android:layout_toStartOf="@+id/add_friend_button"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true">
-
-                            <AutoCompleteTextView
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/find_friend_textview"
-                                android:layout_column="0"
-                                android:layout_gravity="bottom"
-                                android:layout_alignParentTop="false"
-                                android:layout_toLeftOf="@+id/add_friend_button"
-                                android:layout_toStartOf="@+id/add_friend_button"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentStart="true"
-                                android:hint="Search for friends"
-                                android:layout_marginRight="5dp"
-                                android:nextFocusUp="@id/find_friend_textview"
-                                android:nextFocusLeft="@id/find_friend_textview"
-                                android:focusable="true"
-                                android:enabled="true" />
-
-                            <Button
-                                android:id="@+id/clear_friend_text_button"
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:layout_gravity="right|center_vertical"
-                                android:background="@drawable/clear_text"
-                                android:enabled="true"
-                                android:layout_marginRight="10dp" />
-
-                        </FrameLayout>
-
-
-
-                        <ImageButton
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
-                            android:id="@+id/add_friend_button"
-                            android:background="@drawable/add_friend_button"
-                            android:layout_column="15"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginTop="3dp" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Your friends"
-                        android:id="@+id/friends_list_label"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:id="@+id/no_friends_textview"
-                        android:layout_marginLeft="10dp"
-                        android:visibility="gone"
-                        android:text="@string/no_friends"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#62000000" />
-
-                    <ListView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:id="@+id/friends_list_view"
-                        android:fastScrollAlwaysVisible="false"
-                        android:layout_marginLeft="10dp" />
-
-                </LinearLayout>
 
                 <GridLayout
                     android:id="@+id/challenges_leaderboard_tab"

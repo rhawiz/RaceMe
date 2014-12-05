@@ -305,7 +305,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 User userDetails;
                 if (email.equals("admin")) {
 
-                    userDetails = new User("Bossman","Bossman","Bossman","Bossman","Bossman","Bossman","Bossman","Bossman");
+                    userDetails = new User("0000000002","admin","r.hawiz-10@student.lboro.ac.uk","Rawand","Hawiz","","1","m");
 
                 }else{
                     userDetails = authentication.getUser();

@@ -90,10 +90,15 @@ public class User {
     @Override
     public String toString(){
 
+        return getUsername() + " ( "+getFirstname() + " " + getSurname() + " )";
+    }
+
+    public String allToString(){
+
         return "[" + getUserId() + "," + getUsername() +
-                    "," + getEmail() + "," + getFirstname() +
-                        "," + getSurname() + ","+ getProfileImg() +
-                            "," + getIsActive() + "," + getGender() + "]";
+                "," + getEmail() + "," + getFirstname() +
+                "," + getSurname() + ","+ getProfileImg() +
+                "," + getIsActive() + "," + getGender() + "]";
     }
 
 }
