@@ -317,6 +317,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         tabSpec.setIndicator("Map");
         tabHost.addTab(tabSpec);
 
+        tabSpec = tabHost.newTabSpec("past_race");
+        tabSpec.setContent(R.id.race_history_tab);
+        tabSpec.setIndicator("Past races");
+        tabHost.addTab(tabSpec);
+
 
         tabHost.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
             TransitionAnimations transition = new TransitionAnimations();

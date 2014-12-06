@@ -274,7 +274,18 @@
                         android:layout_column="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
+            </GridLayout>
+
+
+
+            <GridLayout
+                android:id="@+id/race_history_tab"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
                 </GridLayout>
+
 
             </FrameLayout>
         </LinearLayout>
