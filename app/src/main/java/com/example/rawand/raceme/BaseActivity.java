@@ -256,6 +256,7 @@ public class BaseActivity extends Activity {
         //this.unregisterReceiver(networkReceiver);
         SaveSharedPreference.setUserDetails(getApplicationContext(), null);
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     public static class NetworkChangeReceiver extends BroadcastReceiver {

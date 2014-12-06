@@ -218,7 +218,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
         stopButton.setVisibility(View.VISIBLE);
 
 
+        startTime = RaceService.getStartTime();
+
         Date now = new Date();
+
         chronometer.setBase( SystemClock.elapsedRealtime() + (RaceService.getStartTime().getTime() - now.getTime()));
         chronometer.start();
         gpsCoordArray = RaceService.getGpsCoordArray();
@@ -377,16 +380,8 @@ public class RaceActivity extends BaseActivity implements Serializable {
             routePolyline = map.addPolyline(routePolylineOption);
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 17));
 
-            Log.w("RESUME", (Location) bundle.get(RaceService.GPS_COORD_LOCATION) + " Bundle Data");
-//            if(gpsCoordArray != null) {
-//                Log.w("RESUME", gpsCoordArray.toString() + " Array Size");
-//                if (gpsCoordArray.size() > 1) {
-//                    Log.w("RESUME", String.valueOf(gpsCoordArray.get(gpsCoordArray.size() - 2)) + " Parameter 1 value");
-//                    Log.w("RESUME", String.valueOf(gpsCoordArray.get(gpsCoordArray.size() - 1)) + " Parameter 2 value");
-//                }
-//            }
             updateDistance();
-           // }
+
         }
     }
 

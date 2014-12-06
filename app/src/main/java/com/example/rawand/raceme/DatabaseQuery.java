@@ -77,7 +77,8 @@ public class DatabaseQuery {
     }
 
     public void close(){
-        db.close();
+        if(db!=null)
+            db.close();
     }
 
     public int getRowCount(){

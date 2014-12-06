@@ -39,21 +39,6 @@ public class RaceSession {
 
 
     RaceSession(String json){
-//        Map sessionMap = new Gson().fromJson(json, Map.class);
-
-        //ArrayList<Location> locationArray = toLocationArray((String[]) sessionMap.get("json_gps_coords"));
-//        String userId = (String) sessionMap.get("user_id");
-//        String raceType = (String) sessionMap.get("race_type");
-//        Date startTime= new Date((String) sessionMap.get("start_time"));
-//        Date endTime= new Date((String) sessionMap.get("end_time"));
-
-//        String userId = (String) new Gson().fromJson(json, Map.class).get("user_id");
-//        String raceType = (String) new Gson().fromJson(json, Map.class).get("race_type");
-//        Date startTime= new Date((String) new Gson().fromJson(json, Map.class).get("start_time"));
-//        Date endTime= new Date((String) new Gson().fromJson(json, Map.class).get("end_time"));
-//
-
-
         this(
 
                 (String) new Gson().fromJson(json, Map.class).get("user_id"),

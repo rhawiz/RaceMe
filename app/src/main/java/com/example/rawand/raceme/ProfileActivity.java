@@ -23,6 +23,9 @@ import android.widget.RadioButton;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mysql.jdbc.Util;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -194,7 +197,7 @@ public class ProfileActivity extends BaseActivity {
 
         if( profileImageString.length() > 1){
             // Turn the image string into a bitmap image
-            Bitmap imageBitmap = decodeBase64(profileImageString);
+            Bitmap imageBitmap = Utilities.decodeBase64(profileImageString);
             // Set the image view as the iamge
             profileImageView.setImageBitmap(imageBitmap);
         }
@@ -327,7 +330,7 @@ public class ProfileActivity extends BaseActivity {
         String userEmail = emailEditText.getText().toString();
         String firstname = firstNameEditText.getText().toString();
         String surname = surnameEditText.getText().toString();
-        String profileImg = encodeBase64(profileImageBitmap);
+        String profileImg = Utilities.encodeBase64(profileImageBitmap);
 
 
         // Set the gender to m by default. If female radio button is checked then set it to f
@@ -521,26 +524,6 @@ public class ProfileActivity extends BaseActivity {
         }
 
         return mediaFile;
-    }
-    /*
-    ** Encode the bitmap image into a string
-     */
-    public static String encodeBase64(Bitmap bitmap) {
-
-        ByteArrayOutputStream baostream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, baostream);
-        byte[] imageBytes = baostream.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-
-        return (encodedImage);
-    }
-
-    /*
-    ** Decode the string back into a bitmap image
-     */
-    public static Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
     }
 
     /*

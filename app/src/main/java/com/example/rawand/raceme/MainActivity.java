@@ -2,6 +2,8 @@ package com.example.rawand.raceme;
 
 import android.content.Context;
 //import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -48,11 +50,27 @@ public class MainActivity extends BaseActivity {
         welcomeMsg = (TextView) findViewById(R.id.welMsg);
 
 
+
+
         User userDetails = SaveSharedPreference.getUserDetails(this);
+
+
+
         if(userDetails == null){
             finish();
         }else{
             welcomeMsg.setText("Hi,\n" + SaveSharedPreference.getUserDetails(this).getFirstname());
+        }
+
+        if(userDetails.getProfileImg() != null || userDetails.getProfileImg() != ""){
+
+            if( userDetails.getProfileImg().length() > 1){
+                // Turn the image string into a bitmap image
+                Bitmap imageBitmap = Utilities.decodeBase64( userDetails.getProfileImg());
+                // Set the image view as the iamge
+                profileButton.setBackground(new BitmapDrawable(imageBitmap));
+                profileButton.setText("Profile");
+            }
         }
 
         exerciseButton.setOnClickListener(new OnClickListener() {
