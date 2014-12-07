@@ -167,29 +167,39 @@
 
                 </GridLayout>
 
+
+                <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    >
                 <GridLayout
                     android:id="@+id/profile_challenges_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp">
+
                     <TextView
                         android:text="@string/profile_achievements"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="10dp"
+                        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
                     <TableLayout>
                         <TableRow>
                             <TextView
-                                android:text="Complete your first route"
+                                android:text="@string/completefirst"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/completefirst_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -198,13 +208,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Challenge a friend"
+                                android:text="@string/challengefriend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/challengefriend_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -213,13 +223,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Complete a friends challenge"
+                                android:text="@string/completefriend"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/completefriend_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -228,13 +238,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Run in the rain"
+                                android:text="@string/rain"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/rain_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -243,13 +253,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Run in the sun"
+                                android:text="@string/sun"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/sun_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -258,13 +268,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Run a total of 5 miles"
+                                android:text="@string/total5miles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/total5miles_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -273,13 +283,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Run a total of 10 miles"
+                                android:text="@string/total10miles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/total10miles_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -288,13 +298,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Complete 5 routes"
+                                android:text="@string/complete5routes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/complete5routes_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -303,13 +313,13 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Complete 5 routes"
+                                android:text="@string/complete10routes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/complete10routes_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -318,13 +328,43 @@
                         </TableRow>
                         <TableRow>
                             <TextView
-                                android:text="Beat your own time on a route"
+                                android:text="@string/complete5mile"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
                                 android:textAppearance="?android:attr/textAppearanceMedium"/>
                             <ImageView
-                                android:src="@drawable/run_default"
+                                android:src="@drawable/complete5mile_bw"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:maxWidth="42dp"
+                                android:maxHeight="42dp" />
+                        </TableRow>
+                        <TableRow>
+                            <TextView
+                                android:text="@string/complete10mile"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            <ImageView
+                                android:src="@drawable/complete10mile_bw"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:maxWidth="42dp"
+                                android:maxHeight="42dp" />
+                        </TableRow>
+                        <TableRow>
+                            <TextView
+                                android:text="@string/beatowntime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:textAppearance="?android:attr/textAppearanceMedium"/>
+                            <ImageView
+                                android:src="@drawable/beatowntime_bw"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:adjustViewBounds="true"
@@ -344,7 +384,7 @@
 
 
                 </GridLayout>
-
+                </ScrollView>
             </FrameLayout>
 
         </LinearLayout>
