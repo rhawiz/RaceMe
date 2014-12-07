@@ -217,7 +217,7 @@ public class BaseActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                openActivity(4);
+                openActivity(5);
                 return true;
             case R.id.action_logout:
                 logout();
