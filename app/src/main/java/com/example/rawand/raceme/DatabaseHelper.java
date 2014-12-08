@@ -272,4 +272,49 @@ public class DatabaseHelper {
         return false;
     }
 
+    public static ArrayList<String> getUserAcheivement( String userId ){
+
+        String sqlQuery = "SELECT challenges_table.challenge_source" +
+                " FROM user_challenge_table " +
+                "LEFT JOIN challenges_table on user_challenge_table.challenge_id = challenges_table.challenge_id" +
+                " WHERE user_id =" + userId;
+
+
+        ArrayList<String> outputArrayList = new ArrayList<String>();
+
+
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(!dbQuery.run()){
+            return outputArrayList;
+        }
+
+        for (int i = 0; i < dbQuery.getRowCount(); i++) {
+            ArrayList currentRow = dbQuery.get(i);
+
+            outputArrayList.add( (String) currentRow.get(i));
+
+
+        }
+
+        return outputArrayList;
+
+
+    }
+
 }

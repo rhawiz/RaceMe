@@ -76,7 +76,9 @@
     <string name="profile_my_challenges"><u>My Challenges</u></string>
     <string name="profile_achievements"><u>My Achievements</u></string>
 
-
+    <!-- Strings related to profile page -->
+    <string name="settings_testmode">Test Mode</string>
+    <string name="settings_units">Units</string>
 
     <string name="title_activity_settings">Settings</string>
     <string name="no_friends">You don\'t have any friends added.\nLook for friends by searching above!</string>
