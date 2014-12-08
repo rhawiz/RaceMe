@@ -3,20 +3,14 @@
     android:layout_height="match_parent"
     tools:context="com.example.rawand.raceme.ProfileActivity">
 
-    <TabHost
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/profile_tabhost">
+
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
 
-            <TabWidget
-                android:id="@android:id/tabs"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"></TabWidget>
+
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -168,226 +162,12 @@
                 </GridLayout>
 
 
-                <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    >
-                <GridLayout
-                    android:id="@+id/profile_challenges_tab"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
-
-                    <TextView
-                        android:text="@string/profile_achievements"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginBottom="15dp"
-                        android:layout_marginTop="10dp"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-                    <TableLayout>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/completefirst"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                            <ImageView
-                                android:src="@drawable/completefirst_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/challengefriend"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/challengefriend_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/completefriend"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/completefriend_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/rain"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/rain_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/sun"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/sun_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/total5miles"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/total5miles_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/total10miles"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/total10miles_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/complete5routes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/complete5routes_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/complete10routes"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/complete10routes_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/complete5mile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/complete5mile_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/complete10mile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/complete10mile_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-                        <TableRow>
-                            <TextView
-                                android:text="@string/beatowntime"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:textAppearance="?android:attr/textAppearanceMedium"/>
-                            <ImageView
-                                android:src="@drawable/beatowntime_bw"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:adjustViewBounds="true"
-                                android:maxWidth="42dp"
-                                android:maxHeight="42dp" />
-                        </TableRow>
-
-                    </TableLayout>
 
 
-                    <TextView
-                        android:text="@string/profile_my_challenges"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
-
-                </GridLayout>
-                </ScrollView>
             </FrameLayout>
 
         </LinearLayout>
-    </TabHost>
+
 
 </RelativeLayout>
