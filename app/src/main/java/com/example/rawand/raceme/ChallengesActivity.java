@@ -45,9 +45,9 @@ public class ChallengesActivity extends BaseActivity {
 
         String userId = SaveSharedPreference.getUserDetails(this).getUserId();
         // Save the new profile data
-        GetDataFromDBTask getDataFromDBTask = new GetDataFromDBTask(userId );
+        //GetDataFromDBTask getDataFromDBTask = new GetDataFromDBTask(userId );
         // Execute the Save in an Async Task
-        getDataFromDBTask.execute();
+        //getDataFromDBTask.execute();
 
     }
 

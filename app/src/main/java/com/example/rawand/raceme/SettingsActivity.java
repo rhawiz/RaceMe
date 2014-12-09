@@ -49,9 +49,7 @@ public class SettingsActivity extends BaseActivity {
         testModeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     SaveSharedPreference.toggleTestMode();
-                Toast.makeText(getApplicationContext(),
-                        SaveSharedPreference.isTestMode().toString(), Toast.LENGTH_SHORT)
-                        .show();
+
                //SaveSharedPreference.isTestMode().toString();
             }
         });
@@ -64,7 +62,7 @@ public class SettingsActivity extends BaseActivity {
                     SaveSharedPreference.setUnits( selectedUnit);
                 }
 
-                Toast.makeText(getApplicationContext(), SaveSharedPreference.getUnits(), Toast.LENGTH_SHORT).show();
+
 
             }
 

@@ -83,6 +83,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     private static Chronometer chronometer; //To count elapsed race time
     private int distanceTravelled;
+    private int averageSpeed;
 
     private DataUpdateReceiver dataUpdateReceiver;
     private IntentFilter intentFilter;
@@ -243,7 +244,9 @@ public class RaceActivity extends BaseActivity implements Serializable {
             distanceTravelled+=RaceUtils.getDistance(gpsCoordArray.get( gpsCoordArray.size()-2),gpsCoordArray.get(gpsCoordArray.size()-1));
             distanceTravelledView.setText(String.valueOf(distanceTravelled));
         }
-
+        //averageSpeed = distanceTravelled / (int) chronometer.getBase();
+        /*averageSpeedView.setText(averageSpeed);*/
+        //Log.w("raceme", "speed " + averageSpeed);
     }
 
     private void startRaceSession(){
