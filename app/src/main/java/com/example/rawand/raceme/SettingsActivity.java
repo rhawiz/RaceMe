@@ -40,43 +40,43 @@ public class SettingsActivity extends BaseActivity {
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
 
+        // Get the dropdown list for the units and populate it with units
         Spinner dropdown = (Spinner)findViewById(R.id.units_picker);
-        String[] items = new String[]{"Meters", "Miles"};
+        String[] items = new String[]{"Meters", "Miles"}; // Extra units can be added here
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        dropdown.setAdapter(adapter);
+        dropdown.setAdapter(adapter); // Populate the dropdown
 
+        // Get the Switch button for the Test Mode
         Switch testModeButton = (Switch) findViewById(R.id.testmode_switch);
+        // Check if TestMode is already enabled, if so then turn on the switch
+        if( SaveSharedPreference.isTestMode() )
+        {
+            testModeButton.setChecked(true);
+        }
+        // Add a listener so that it toggles TestMode
         testModeButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     SaveSharedPreference.toggleTestMode();
-
-               //SaveSharedPreference.isTestMode().toString();
             }
         });
+        // Get the latest version of the dropdown list
         Spinner unitPicker = (Spinner) findViewById(R.id.units_picker);
+        // Add a listener to the dropdown List
         unitPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedUnit = parentView.getItemAtPosition(position).toString();
                 if( selectedUnit.length() > 0){
-                    SaveSharedPreference.setUnits( selectedUnit);
+                    SaveSharedPreference.setUnits( selectedUnit); // Set the units
                 }
 
-
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
 
             }
-
         });
-
-
     }
-
-
 
 }
 
