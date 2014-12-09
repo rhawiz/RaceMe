@@ -2,6 +2,8 @@ package com.example.rawand.raceme;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -271,5 +273,134 @@ public class DatabaseHelper {
         }
         return false;
     }
+
+    public static ArrayList<RaceSession> getUserRaces(String userId){
+
+        String sqlQuery = "SELECT user_id, race_type,json_gps_coords,start_time,end_time FROM coac11.race_log_table WHERE race_log_table.user_id = 1;";
+
+
+        ArrayList<RaceSession> raceSessionList = new ArrayList<RaceSession>();
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(!dbQuery.run()){
+            return raceSessionList;
+        }
+
+        for (int i = 0; i < dbQuery.getRowCount(); i++) {
+
+            ArrayList currentRow = dbQuery.get(i);
+
+
+            RaceSession currentRaceSession = new RaceSession(
+                    (String) currentRow.get(0),
+                    (String) currentRow.get(1),
+                    Utilities.toLocationArray((String[]) new Gson().fromJson(((String) currentRow.get(2)), String[].class) ),
+                    Utilities.getDateFromString(((String) currentRow.get(3)).substring(0,((String) currentRow.get(3)).length()-2)),
+                    Utilities.getDateFromString(((String) currentRow.get(4)).substring(0,((String) currentRow.get(4)).length()-2))
+            );
+            raceSessionList.add(currentRaceSession);
+        }
+
+        return raceSessionList;
+    }
+
+    public static ArrayList<String> getUserAcheivement( String userId ){
+
+        String sqlQuery = "SELECT challenges_table.challenge_source" +
+                " FROM coac11.user_challenge_table" +
+                " LEFT JOIN coac11.challenges_table on user_challenge_table.challenge_id = challenges_table.challenge_id" +
+                " WHERE user_id =" + userId;
+
+        ArrayList<String> outputArrayList = new ArrayList<String>();
+
+
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(!dbQuery.run()){
+            return outputArrayList;
+        }
+        Log.w("DBHELPER",String.valueOf(dbQuery.getRowCount()));
+
+        for (int i = 0; i < dbQuery.getRowCount(); i++) {
+            ArrayList currentRow = dbQuery.get(i);
+
+            outputArrayList.add((String) currentRow.get(0));
+
+
+        }
+
+        return outputArrayList;
+
+
+    }
+
+    public static User getUserDetails(String id){
+        String sqlQuery = "SELECT id, username, email, firstname, surname, profile_img, IS_ACTIVE, gender FROM coac11.user_table WHERE id = " + id;
+
+        DatabaseConnection dbConnection = null;
+
+        try {
+            dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
+
+        if(!dbQuery.run()){
+            return new User();
+        }
+
+
+        if(dbQuery.getRowCount()== 0) {
+            return new User();
+        }
+
+
+        return new User(dbQuery.get(0,0),dbQuery.get(0,1),dbQuery.get(0,2),dbQuery.get(0,3),dbQuery.get(0,4),dbQuery.get(0,5),dbQuery.get(0,6),dbQuery.get(0,7));
+
+
+    }
+
+
+
+
+
 
 }

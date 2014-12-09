@@ -64,13 +64,13 @@ public class FriendsActivity extends BaseActivity {
         final InitFriendsScreenTask friendsScreenTask = new InitFriendsScreenTask();
         friendsScreenTask.execute();
 
-        initFriendsTab();
-        initRequestsTab();
+        initFriendsTabContent();
+        initRequestsTabContent();
 
 
     }
 
-    private void initRequestsTab(){
+    private void initRequestsTabContent(){
         friendRequestsListView = (ListView) findViewById(R.id.friend_requests_list_view);
         noRequestsView = (TextView) findViewById(R.id.no_requests_textview);
 
@@ -94,7 +94,7 @@ public class FriendsActivity extends BaseActivity {
     }
 
 
-    private void initFriendsTab(){
+    private void initFriendsTabContent(){
 
         friendSearchView = (AutoCompleteTextView) findViewById(R.id.find_friend_textview);
 
@@ -189,7 +189,7 @@ public class FriendsActivity extends BaseActivity {
         HashMap<User, Integer> mIdMap = new HashMap<User, Integer>();
 
         public UserArrayAdapter(Context context, int textViewResourceId,
-                                  List<User> objects) {
+                                List<User> objects) {
             super(context, textViewResourceId, objects);
             for (int i = 0; i < objects.size(); ++i) {
                 mIdMap.put(objects.get(i), i);

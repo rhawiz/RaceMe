@@ -47,8 +47,6 @@ public class Utilities {
 
     public static ArrayList<Location> toLocationArray(String[] locationList){
 
-        Log.w("LOCATIONARRAY", locationList.toString());
-
         ArrayList<Location> locationArray = new ArrayList<Location>();
 
         for (int i = 0; i < locationList.length; i++) {

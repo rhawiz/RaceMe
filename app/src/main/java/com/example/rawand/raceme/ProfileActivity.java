@@ -59,8 +59,6 @@ public class ProfileActivity extends BaseActivity {
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
 
-        initTabs();
-
         // Add a click listener to the save button
         Button saveButton = (Button) findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -111,46 +109,7 @@ public class ProfileActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Initialise tabs
-     */
-    private void initTabs() {
 
-
-        tabHost = (TabHost) findViewById(R.id.profile_tabhost);
-        tabHost.setup();
-
-        TabHost.TabSpec tabSpec = tabHost.newTabSpec("my_profile");
-        tabSpec.setContent(R.id.profile_my_profile_tab);
-        tabSpec.setIndicator("My Profile");
-        tabHost.addTab(tabSpec);
-
-        tabSpec = tabHost.newTabSpec("My Profile");
-        tabSpec.setContent(R.id.profile_challenges_tab);
-        tabSpec.setIndicator("Challenges");
-        tabHost.addTab(tabSpec);
-
-
-        tabHost.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()) {
-            TransitionAnimations transition = new TransitionAnimations();
-
-            public void onSwipeLeft() {
-                int nextTab = tabHost.getCurrentTab() + 1;
-                if (nextTab > 1) nextTab = 0;
-
-                tabHost.setCurrentTab(nextTab);
-                tabHost.getCurrentView().setAnimation(transition.inFromRightAnimation());
-            }
-
-            public void onSwipeRight() {
-                int nextTab = tabHost.getCurrentTab() - 1;
-                if (nextTab < 0) nextTab = 1;
-
-                tabHost.setCurrentTab(nextTab);
-                tabHost.getCurrentView().setAnimation(transition.outToRightAnimation());
-            }
-        });
-    }
 
     /*
     ** Make the Email Address not editable
@@ -182,7 +141,9 @@ public class ProfileActivity extends BaseActivity {
         // Disable the gender radio buttons so the user can't accidentally click it
         disableGenderButtons();
         // Make sure the correct Radio Button is checked
-        if (gender.toLowerCase() == "m" || gender.toLowerCase() == "male") {
+
+        // Check if the gender is m or f
+        if (gender.equalsIgnoreCase("m")) {
             maleRadioButton.setChecked(true);
             femaleRadioButton.setChecked(false);
 
@@ -554,13 +515,12 @@ public class ProfileActivity extends BaseActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
 
-            if (DatabaseHelper.updateUser(id,
-                    email,
-                    firstname,
-                    surname,
-                    profileImg,
-                    gender))
+            if (DatabaseHelper.updateUser(id,email,firstname,surname,profileImg,gender)){
+                User newUser = DatabaseHelper.getUserDetails(id);
+                SaveSharedPreference.setUserDetails(ProfileActivity.this.getApplicationContext(),newUser);
                 return true;
+            }
+
 
             return false;
 

@@ -23,15 +23,18 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -54,6 +57,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -70,6 +74,9 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private LocationManager locationManager;
     private Date startTime;
     private Date endTime;
+
+    private User currentUser;
+
 
     private RadioGroup raceTypeRadioGroup;
 
@@ -94,7 +101,14 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private ArrayList<Location> gpsCoordArray;
     GoogleMap map;
 
+    private ArrayList<RaceSession> raceSessionArray;
+    private RaceArrayAdapter raceSessionListAdapter;
+    private ListView raceSessionListView;
+    private TextView noRaceSessionTextView;
+
+
     Handler alertHandler;
+    private int averageSpeed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +121,8 @@ public class RaceActivity extends BaseActivity implements Serializable {
         initTabs();
 
         initMap();
+
+        currentUser =  SaveSharedPreference.getUserDetails(RaceActivity.this);
 
         distanceTravelled = 0;
         alertHandler = new Handler();
@@ -139,7 +155,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 RadioButton selectedButton = (RadioButton) findViewById(raceTypeRadioGroup.getCheckedRadioButtonId());
                 raceType = (String) selectedButton.getText();
-             }
+            }
         });
 
         startButton = (ImageButton) findViewById(R.id.start_img_button);
@@ -159,10 +175,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
                             .setMessage("Please enable Locations.")
                             .setCancelable(true)
                             .setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                             })
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            })
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     Intent gpsOptionsIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -182,6 +198,19 @@ public class RaceActivity extends BaseActivity implements Serializable {
             }
         });
 
+        raceSessionListView = (ListView) findViewById(R.id.race_session_listview);
+        raceSessionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
+                RaceSession selectedSession = raceSessionListAdapter.getItem(pos);
+                Intent intent = new Intent(RaceActivity.this, ViewRaceActivity.class);
+                intent.putExtra("raceSession",(Parcelable) selectedSession);
+                startActivity(intent);
+            }
+        });
+
+        noRaceSessionTextView = (TextView) findViewById(R.id.race_session_label);
+
         stopButton = (ImageButton) findViewById(R.id.stop_img_button);
 
         stopButton.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +221,9 @@ public class RaceActivity extends BaseActivity implements Serializable {
                 stopRaceSession();
             }
         });
+
+        GetRaceSessionsTask getRaceSessionsTask = new GetRaceSessionsTask();
+        getRaceSessionsTask.execute();
 
 
         if(isServiceRunning(RaceService.class)){
@@ -207,7 +239,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
                 .color(Color.BLUE)
                 .geodesic(true);
 
-        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        map = ((MapFragment) getFragmentManager().findFragmentById(R.id.race_map)).getMap();
 
         map.setMyLocationEnabled(true);
         map.addPolyline(routePolylineOption);
@@ -242,6 +274,18 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
             distanceTravelled+=RaceUtils.getDistance(gpsCoordArray.get( gpsCoordArray.size()-2),gpsCoordArray.get(gpsCoordArray.size()-1));
             distanceTravelledView.setText(String.valueOf(distanceTravelled));
+        }
+
+        Chronometer clock = (Chronometer)findViewById(R.id.timer);
+        String timeStr = (String) clock.getText();
+        String[] tokens = timeStr.split(":");
+        int mins = Integer.parseInt(tokens[0]);
+        int secs = Integer.parseInt(tokens[1]);
+        int duration = (60 * mins) + secs;
+        if (duration > 0) {
+            averageSpeed = distanceTravelled / (int) duration;
+            TextView averageSpeedText = (TextView) findViewById(R.id.average_speed_view);
+            averageSpeedText.setText(String.valueOf(averageSpeed));
         }
 
     }
@@ -347,6 +391,31 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
 
+    private class RaceArrayAdapter extends ArrayAdapter<RaceSession> {
+
+        HashMap<RaceSession, Integer> mIdMap = new HashMap<RaceSession, Integer>();
+
+        public RaceArrayAdapter(Context context, int textViewResourceId,
+                                List<RaceSession> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            RaceSession item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+    }
+
+
     public void onDestroy()
     {
         //this.unregisterReceiver(dataUpdateReceiver);
@@ -416,6 +485,52 @@ public class RaceActivity extends BaseActivity implements Serializable {
                 RaceUtils.storeRaceSessionLocally(session, RaceActivity.this);
             }else{
                 Utilities.showToast("Race session has been logged.",Toast.LENGTH_LONG,RaceActivity.this);
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+
+
+    }
+
+    public class GetRaceSessionsTask extends AsyncTask<Void, Void, Boolean> {
+
+
+
+        public GetRaceSessionsTask() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            String userId = currentUser.getUserId();
+
+            raceSessionArray = DatabaseHelper.getUserRaces(userId);
+
+            raceSessionListAdapter = new RaceArrayAdapter(RaceActivity.this,android.R.layout.simple_list_item_1, raceSessionArray);
+
+
+            return true;
+
+
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            if(success) {
+
+                raceSessionListView.setAdapter(raceSessionListAdapter);
+
+
+                if(raceSessionListView.getCount() == 0){
+                    noRaceSessionTextView.setVisibility(View.VISIBLE);
+                    raceSessionListView.setVisibility(View.GONE);
+                }
 
             }
         }

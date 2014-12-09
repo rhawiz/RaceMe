@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public class SaveSharedPreference
 {
+    private static Boolean isTestMode = false;
+    private static String units = "meter";
     static final String USER_DETAILS = "userDetails";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -40,5 +42,24 @@ public class SaveSharedPreference
 
     }
 
+    public static Boolean isTestMode(){
+        return isTestMode;
+    }
+
+    public static void toggleTestMode(){
+        if( isTestMode == false){
+            isTestMode = true;
+        }else{
+            isTestMode = false;
+        }
+    }
+
+    public static String getUnits(){
+        return units;
+    }
+
+    public static void setUnits( String unitType){
+        units = unitType.toLowerCase();
+    }
 
 }

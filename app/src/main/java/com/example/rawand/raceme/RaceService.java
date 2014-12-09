@@ -49,6 +49,12 @@ public class RaceService extends Service  {
 
     public RaceService() {
 
+        if( SaveSharedPreference.isTestMode() == true ){
+            setTestMode(true);
+        }else{
+            setTestMode(false);
+        }
+
     }
 
     @Override
@@ -103,6 +109,7 @@ public class RaceService extends Service  {
 
         if(TESTMODE) {
             TimerTask testLocationRoute = new testLocationRoute();
+            timer = new Timer();
             timer.scheduleAtFixedRate(testLocationRoute,0,1000);
         }
         else{
@@ -174,8 +181,11 @@ public class RaceService extends Service  {
             timer.cancel();
         }
         gpsCoordArray = new ArrayList<Location>();
-        locationManager.removeUpdates(locationListener);
-        locationManager = null;
+
+        if(!TESTMODE) {
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         Date now = new Date();
         String totalTime = sdf.format(new Date(now.getTime() - startTime.getTime()));
@@ -195,6 +205,7 @@ public class RaceService extends Service  {
             Location loc = new Location("location");
             loc.setLongitude(longitude);
             loc.setLatitude(latitude);
+            Log.w("raceme", gpsCoordArray.toString());
 
             gpsCoordArray.add(loc);
             sendLocationBroadcast(loc);

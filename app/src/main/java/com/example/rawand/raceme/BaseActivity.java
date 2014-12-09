@@ -31,7 +31,7 @@ public class BaseActivity extends Activity {
     private static boolean isLaunch = true;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private NetworkChangeReceiver networkReceiver;
+    public NetworkChangeReceiver networkReceiver;
     private IntentFilter intentFilter;
 
     @Override
@@ -119,7 +119,14 @@ public class BaseActivity extends Activity {
         intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
 
-        registerReceiver(networkReceiver, intentFilter);
+
+
+        try{
+            registerReceiver(networkReceiver, intentFilter);
+        }catch(IllegalArgumentException e){
+            e.printStackTrace();
+
+        }
 
         if(isLaunch){
             isLaunch = false;
@@ -217,7 +224,7 @@ public class BaseActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_settings:
-                openActivity(4);
+                openActivity(5);
                 return true;
             case R.id.action_logout:
                 logout();
@@ -303,7 +310,6 @@ public class BaseActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            Log.w("RACESESSION",String.valueOf(RaceUtils.getLocalRaceSessions(activity).size() ));
 
                 return Utilities.uploadLocalSessions(activity);
 

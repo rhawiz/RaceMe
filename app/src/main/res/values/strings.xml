@@ -75,12 +75,26 @@
     <string name="profile_name">Name</string>
     <string name="profile_my_challenges"><u>My Challenges</u></string>
     <string name="profile_achievements"><u>My achievements</u></string>
-
-
-
     <string name="title_activity_settings">Settings</string>
     <string name="no_friends">You don\'t have any friends added.\nLook for friends by searching above!</string>
     <string name="title_activity_friends">FriendsActivity</string>
     <string name="no_requests">You currently don\'t have any new friend requests.</string>
+    <string name="no_races">You don\'t currently have any races logged.</string>
+    <string name="title_activity_view_race">ViewRaceActivity</string>
+    <string name="settings_testmode">Test mode</string>
+    <string name="settings_units">Units</string>
+
+    <string name="completefirst">Complete your first route</string>
+    <string name="challengefriend">Challenge a friend</string>
+    <string name="completefriend">Complete a friends challenge</string>
+    <string name="rain">Run in the rain</string>
+    <string name="sun">Run in the sun</string>
+    <string name="total5miles">Run a total of 5 miles</string>
+    <string name="total10miles">Run a total of 10 miles</string>
+    <string name="complete5routes">Complete 5 routes</string>
+    <string name="complete10routes">Complete 10 routes</string>
+    <string name="complete5mile">Complete a 5 mile route</string>
+    <string name="complete10mile">Complete a 10 mile route</string>
+    <string name="beatowntime">Beat your own time on a route</string>
 
 </resources>

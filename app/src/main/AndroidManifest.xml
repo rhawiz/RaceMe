@@ -17,6 +17,7 @@
     <!-- <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" /> -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -71,7 +72,6 @@
         <activity
             android:name="com.example.rawand.raceme.SettingsActivity"
             android:label="@string/title_activity_settings" />
-
         <activity
             android:name="com.example.rawand.raceme.FriendsActivity"
             android:label="@string/title_activity_friends" >
@@ -94,8 +94,10 @@
             android:exported="true" >
         </receiver>
 
-
-
+        <activity
+            android:name="com.example.rawand.raceme.ViewRaceActivity"
+            android:label="@string/title_activity_view_race" >
+        </activity>
     </application>
 
 </manifest>

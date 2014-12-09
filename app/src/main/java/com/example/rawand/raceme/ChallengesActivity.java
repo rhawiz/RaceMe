@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TabHost;
@@ -32,7 +33,8 @@ import java.util.Map;
 
 
 public class ChallengesActivity extends BaseActivity {
-    private TabHost tabHost;
+    private static ArrayList<String> challengesArrayList = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,51 +43,86 @@ public class ChallengesActivity extends BaseActivity {
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
 
-        initTabs();
+        String userId = SaveSharedPreference.getUserDetails(this).getUserId();
+        // Save the new profile data
+        GetDataFromDBTask getDataFromDBTask = new GetDataFromDBTask(userId );
+        // Execute the Save in an Async Task
+        getDataFromDBTask.execute();
 
     }
 
 
-    /**
-     * Initialise tabs
-     */
-    private void initTabs(){
+    /*
+   ** Async Task that will save the data to the database
+   */
+    public class GetDataFromDBTask extends AsyncTask<Void, Void, Boolean> {
+        private String id;
+        private String email;
+        private String firstname;
+        private String surname;
+        private String profileImg;
+        private String gender;
 
+        public GetDataFromDBTask(String userId
+        ) {
+            this.id = userId;
 
-        tabHost = (TabHost) findViewById(R.id.challenges_tabhost);
-        tabHost.setup();
+        }
 
+        @Override
+        protected Boolean doInBackground(Void... params) {
 
-        TabSpec tabSpec = tabHost.newTabSpec("leaderboard");
-        tabSpec.setContent(R.id.challenges_leaderboard_tab);
-        tabSpec.setIndicator("Leaderboard");
-        tabHost.addTab(tabSpec);
+            challengesArrayList =  DatabaseHelper.getUserAcheivement(id);
 
-        tabSpec  = tabHost.newTabSpec("achievement");
-        tabSpec.setContent(R.id.challenges_achievement_tab);
-        tabSpec.setIndicator("Achievements");
-        tabHost.addTab(tabSpec);
+            return true;
 
-        tabHost.setOnTouchListener(new OnSwipeTouchListener(getApplicationContext()){
-            TransitionAnimations transition = new TransitionAnimations();
-            public void onSwipeLeft() {
-                int nextTab = tabHost.getCurrentTab() + 1;
-                if(nextTab > 2)nextTab = 0;
+        }
 
-                tabHost.setCurrentTab(nextTab);
-                tabHost.getCurrentView().setAnimation(transition.inFromRightAnimation());
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            // Change all the acheivements
+
+            Boolean found = false;
+            String imageSource = "";
+            for (String s : challengesArrayList){
+                //ImageView imgview = (ImageView) findViewById(s);
+                //challengesArrayList.contains();
+
             }
-            public void onSwipeRight() {
-                int nextTab = tabHost.getCurrentTab() - 1;
-                if(nextTab < 0)nextTab = 2;
 
-                tabHost.setCurrentTab(nextTab);
-                tabHost.getCurrentView().setAnimation(transition.outToRightAnimation());
+            if( found)
+            {
+
+            }else
+            {
+                imageSource += "_bw";
             }
-        });
 
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
 
 
     }
+
+    @Override
+    protected void onStop()
+    {
+
+        try {
+            unregisterReceiver(networkReceiver);
+        }
+        catch(IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        super.onStop();
+    }
+
+
+
+
 
 }

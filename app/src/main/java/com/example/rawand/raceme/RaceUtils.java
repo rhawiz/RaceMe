@@ -30,6 +30,7 @@ import java.util.Map;
  */
 public final class RaceUtils{
     private static final float MILES_TO_METER_CONVERSION = (float) 1609.344;
+    private static String units = "meter";
 
 
     /**
@@ -54,7 +55,13 @@ public final class RaceUtils{
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         float dist = (float) (earthRad * c);
 
-        return dist * MILES_TO_METER_CONVERSION;
+        units = SaveSharedPreference.getUnits();
+
+        if( units == "meter"){
+            dist =  dist * MILES_TO_METER_CONVERSION;
+        }
+
+        return dist;
     }
 
     public static int calculateTotalDistance(ArrayList<Location> gpsCoordArray){
@@ -63,7 +70,7 @@ public final class RaceUtils{
         for (int i = 1; i < gpsCoordArray.size(); i++) {
             totalDistance += getDistance(gpsCoordArray.get(i-1),gpsCoordArray.get(i));
         }
-        
+
         return totalDistance;
     }
 
