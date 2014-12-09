@@ -196,6 +196,9 @@ public class RaceService extends Service  {
         /**
          * This class will dynamically create a new location object and call a broadcast event.
          * To be used for testing purposes.
+         *
+         *
+         *
          */
         double latitude = 52.765538;
         double longitude =  -1.219219;
