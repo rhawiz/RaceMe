@@ -32,6 +32,10 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ *
+ */
+
 public class ChallengesActivity extends BaseActivity {
     private static ArrayList<String> challengesArrayList = null;
 

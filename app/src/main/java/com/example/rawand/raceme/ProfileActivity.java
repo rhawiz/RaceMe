@@ -34,6 +34,7 @@ import java.util.Locale;
 
 /**
  * Made by Ian Wong.
+ *
  */
 
 public class ProfileActivity extends BaseActivity {
