@@ -49,6 +49,12 @@ public class RaceService extends Service  {
 
     public RaceService() {
 
+        if( SaveSharedPreference.isTestMode() == true ){
+            setTestMode(true);
+        }else{
+            setTestMode(false);
+        }
+
     }
 
     @Override
@@ -103,6 +109,7 @@ public class RaceService extends Service  {
 
         if(TESTMODE) {
             TimerTask testLocationRoute = new testLocationRoute();
+            timer = new Timer();
             timer.scheduleAtFixedRate(testLocationRoute,0,1000);
         }
         else{
