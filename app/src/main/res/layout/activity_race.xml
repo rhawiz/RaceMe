@@ -167,7 +167,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="km/h"
+                            android:text="m/s"
                             android:id="@+id/average_speed_unit"
                             android:layout_column="3"
                             android:layout_gravity="bottom" />

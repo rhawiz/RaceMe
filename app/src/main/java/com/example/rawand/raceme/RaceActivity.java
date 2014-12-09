@@ -244,9 +244,18 @@ public class RaceActivity extends BaseActivity implements Serializable {
             distanceTravelled+=RaceUtils.getDistance(gpsCoordArray.get( gpsCoordArray.size()-2),gpsCoordArray.get(gpsCoordArray.size()-1));
             distanceTravelledView.setText(String.valueOf(distanceTravelled));
         }
-        //averageSpeed = distanceTravelled / (int) chronometer.getBase();
-        /*averageSpeedView.setText(averageSpeed);*/
-        //Log.w("raceme", "speed " + averageSpeed);
+
+        Chronometer clock = (Chronometer)findViewById(R.id.timer);
+        String timeStr = (String) clock.getText();
+        String[] tokens = timeStr.split(":");
+        int mins = Integer.parseInt(tokens[0]);
+        int secs = Integer.parseInt(tokens[1]);
+        int duration = (60 * mins) + secs;
+        if (duration > 0) {
+            averageSpeed = distanceTravelled / (int) duration;
+            TextView averageSpeedText = (TextView) findViewById(R.id.average_speed_view);
+            averageSpeedText.setText(String.valueOf(averageSpeed));
+        }
     }
 
     private void startRaceSession(){
