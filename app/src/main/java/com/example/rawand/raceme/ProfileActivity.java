@@ -141,7 +141,9 @@ public class ProfileActivity extends BaseActivity {
         // Disable the gender radio buttons so the user can't accidentally click it
         disableGenderButtons();
         // Make sure the correct Radio Button is checked
-        if (gender.toLowerCase() == "m" || gender.toLowerCase() == "male") {
+
+        // Check if the gender is m or f
+        if (gender.equalsIgnoreCase("m")) {
             maleRadioButton.setChecked(true);
             femaleRadioButton.setChecked(false);
 
