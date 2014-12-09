@@ -1,6 +1,7 @@
 package com.example.rawand.raceme;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -275,8 +276,8 @@ public class DatabaseHelper {
     public static ArrayList<String> getUserAcheivement( String userId ){
 
         String sqlQuery = "SELECT challenges_table.challenge_source" +
-                " FROM user_challenge_table " +
-                "LEFT JOIN challenges_table on user_challenge_table.challenge_id = challenges_table.challenge_id" +
+                " FROM coac11.user_challenge_table " +
+                "LEFT JOIN coac11.challenges_table on user_challenge_table.challenge_id = challenges_table.challenge_id" +
                 " WHERE user_id =" + userId;
 
 
@@ -303,7 +304,9 @@ public class DatabaseHelper {
         if(!dbQuery.run()){
             return outputArrayList;
         }
-
+        ArrayList a = dbQuery.get(0);
+        //Log.w("raceme", a.toString());
+        //Toast.makeText(null, a.toString() , Toast.LENGTH_SHORT).show();
         for (int i = 0; i < dbQuery.getRowCount(); i++) {
             ArrayList currentRow = dbQuery.get(i);
 

@@ -46,21 +46,34 @@ public final class RaceUtils{
         double lat2 = loc2.getLatitude();
         double lng2 = loc2.getLongitude();
 
+        Log.w("raceme", "this is lat1 " + lat1);
+        Log.w("raceme", "this is lng1 " + lng1);
+        Log.w( "raceme", "lat2 is " + lat2);
+        Log.w( "raceme", "lng2 is " + lng2);
+
         double earthRad = 6371; //kilometers
         double dLatitude = Math.toRadians(lat2-lat1);
+        Log.w("raceme", "this is dLat " + dLatitude);
         double dLongitude = Math.toRadians(lng2-lng1);
+        Log.w("raceme", "this is dLng " + dLongitude);
         double a = Math.sin(dLatitude/2) * Math.sin(dLatitude/2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                         Math.sin(dLongitude/2) * Math.sin(dLongitude/2);
+        Log.w("raceme", "this is a " + a);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        Log.w("raceme", "this is c " + c);
         float dist = (float) (earthRad * c);
+
+        if(SaveSharedPreference.isTestMode()){
+            dist = dist * 1000;
+        }
 
         units = SaveSharedPreference.getUnits();
 
         if( units == "meter"){
            dist =  dist * MILES_TO_METER_CONVERSION;
         }
-
+        Log.w("raceme", "this is dist " + dist);
         return dist;
     }
 

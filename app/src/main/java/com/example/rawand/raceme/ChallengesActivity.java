@@ -74,6 +74,7 @@ public class ChallengesActivity extends BaseActivity {
 
             challengesArrayList =  DatabaseHelper.getUserAcheivement(id );
 
+
             return true;
 
         }
@@ -84,9 +85,11 @@ public class ChallengesActivity extends BaseActivity {
 
             Boolean found = false;
             String imageSource = "";
+
             for (String s : challengesArrayList){
                 //ImageView imgview = (ImageView) findViewById(s);
                 //challengesArrayList.contains();
+                Toast.makeText(getApplicationContext(),s , Toast.LENGTH_SHORT).show();
 
             }
 

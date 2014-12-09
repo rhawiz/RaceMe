@@ -202,6 +202,7 @@ public class RaceService extends Service  {
             Location loc = new Location("location");
             loc.setLongitude(longitude);
             loc.setLatitude(latitude);
+            Log.w("raceme", gpsCoordArray.toString());
 
             gpsCoordArray.add(loc);
             sendLocationBroadcast(loc);
