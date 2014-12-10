@@ -37,8 +37,8 @@ import java.util.Map;
  */
 
 public class ChallengesActivity extends BaseActivity {
-    private static ArrayList<String> challengesArrayList = null;
-
+    private ArrayList<ImageView> challengesIconArray;
+    private ArrayList<String> challengesArrayList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,25 @@ public class ChallengesActivity extends BaseActivity {
         drawerList.setItemChecked(position, true);
         setTitle(listArray[position]);
 
+
+
         String userId = SaveSharedPreference.getUserDetails(this).getUserId();
+
+        challengesIconArray = new ArrayList<ImageView>();
+        challengesIconArray.add((ImageView) findViewById(R.id.completefirst_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.complete10mile_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.challengefriend_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.completefriend_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.rain_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.sun_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.total5miles_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.total10miles_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.complete5routes_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.complete10routes_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.complete5mile_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.complete10mile_imageview));
+        challengesIconArray.add((ImageView) findViewById(R.id.beatowntime_imageview));
+
         // Save the new profile data
         GetDataFromDBTask getDataFromDBTask = new GetDataFromDBTask(userId );
         // Execute the Save in an Async Task
@@ -78,6 +96,9 @@ public class ChallengesActivity extends BaseActivity {
 
             challengesArrayList =  DatabaseHelper.getUserAcheivement(id);
 
+            if(challengesArrayList == null){
+                return false;
+            }
             return true;
 
         }
@@ -86,20 +107,22 @@ public class ChallengesActivity extends BaseActivity {
         protected void onPostExecute(final Boolean success) {
             // Change all the acheivements
 
-            Boolean found = false;
-            String imageSource = "";
-            for (String s : challengesArrayList){
-                //ImageView imgview = (ImageView) findViewById(s);
-                //challengesArrayList.contains();
+            if(success){
+                for (String s : challengesArrayList){
+                    //ImageView imgview = (ImageView) findViewById(s);
+                    //challengesArrayList.contains();
+                    Log.w("CHALLENGESACTIVITY",s);
+                    for(ImageView i : challengesIconArray){
+                        if(s.equals(i.getTag().toString())){
+                            Log.w("CHALLENGESACTIVITY",i.toString());
+                            i.setImageResource(getResources().getIdentifier(s,"drawable",getPackageName()));
+                            break;
+                        }
+                    }
 
-            }
-
-            if( found)
-            {
-
-            }else
-            {
-                imageSource += "_bw";
+                }
+            }else{
+                Utilities.showToast("Could retrieve challenges.", Toast.LENGTH_LONG,ChallengesActivity.this);
             }
 
         }

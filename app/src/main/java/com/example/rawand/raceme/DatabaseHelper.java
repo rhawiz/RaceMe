@@ -347,7 +347,7 @@ public class DatabaseHelper {
         DatabaseQuery dbQuery = new DatabaseQuery(dbConnection, sqlQuery);
 
         if(!dbQuery.run()){
-            return outputArrayList;
+            return null;
         }
         Log.w("DBHELPER",String.valueOf(dbQuery.getRowCount()));
 

@@ -6,16 +6,17 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        >
-
-
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp">
 
 
         <TableLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:stretchColumns="*">
             <TableRow>
                 <TextView
                     android:text="@string/completefirst"
@@ -30,7 +31,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/completefirst_imageview"
+                    android:tag = "completefirst" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -45,7 +48,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/challengefriend_imageview"
+                    android:tag = "challengefriend" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -60,7 +65,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/completefriend_imageview"
+                    android:tag = "completefriend" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -75,7 +82,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/rain_imageview"
+                    android:tag = "rain" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -90,7 +99,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/sun_imageview"
+                    android:tag = "sun" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -105,7 +116,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/total5miles_imageview"
+                    android:tag = "total5miles" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -120,7 +133,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/total10miles_imageview"
+                    android:tag = "total10miles" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -135,7 +150,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/complete5routes_imageview"
+                    android:tag = "complete5routes" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -150,7 +167,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/complete10routes_imageview"
+                    android:tag = "complete10routes" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -165,7 +184,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/complete5mile_imageview"
+                    android:tag = "complete5mile" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -180,7 +201,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/complete10mile_imageview"
+                    android:tag = "complete10mile" />
             </TableRow>
             <TableRow>
                 <TextView
@@ -195,7 +218,9 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:maxWidth="42dp"
-                    android:maxHeight="42dp" />
+                    android:maxHeight="42dp"
+                    android:id="@+id/beatowntime_imageview"
+                    android:tag = "beatowntime" />
             </TableRow>
 
         </TableLayout>
