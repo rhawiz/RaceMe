@@ -2,6 +2,8 @@ package com.example.rawand.raceme;
 
 /**
  * Created by RAWAND on 29/11/2014.
+ *
+ * Data structure to perform database connection activities and store connection states.
  */
 import java.sql.Connection;
 import java.sql.DriverManager;

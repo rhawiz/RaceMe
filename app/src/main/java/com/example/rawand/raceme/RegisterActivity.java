@@ -23,6 +23,12 @@ import android.widget.Toast;
 import java.sql.SQLException;
 
 
+/**
+ * Register screen.
+ * Enables user to register as a new user.
+ * Update database table to add new user.
+ */
+
 public class RegisterActivity extends Activity {
     private EditText firstnameView;
     private EditText surnameView;
@@ -86,6 +92,10 @@ public class RegisterActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Attempt to register the user.
+     */
     private void attemptRegister(){
 
 
@@ -131,7 +141,7 @@ public class RegisterActivity extends Activity {
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
+     * Represents an asynchronous registration task used to authenticate
      * the user.
      */
     public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
@@ -211,22 +221,46 @@ public class RegisterActivity extends Activity {
         });
     }
 
+    /**
+     * Check if the name is valid
+     * @param name Input name
+     * @return True if valid, false if invalid.
+     */
     private boolean isNameValid(String name){
         //TODO: Create validation logic
         return true;
     }
 
+
+    /**
+     * Check if the email inputted is valid
+     *
+     * @param email Input email
+     * @return True if valid, false if invalid.
+     */
     private boolean isEmailValid(String email){
         //TODO: Create validation logic
 
         return email.contains("@");
     }
 
+    /**
+     * Check if the password inputted is valid
+     *
+     * @param password Input password
+     * @return True if valid, false if invalid.
+     */
+
     private boolean isPasswordValid(String password){
         //TODO: Create validation logic
         return password.length() > 4;
     }
 
+
+    /**
+     * Show or hide the progress animation to let the user know that something is happening in the background.
+     * @param show True to show, false to hide.
+     */
     public void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
         // for very easy animations. If available, use these APIs to fade-in

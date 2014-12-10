@@ -27,6 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
+/**
+ * Activity class for Friends screen.
+ * Will contain any methods and variable related to the friends screen.
+ */
 public class FriendsActivity extends BaseActivity {
     private TabHost tabHost;
     private AutoCompleteTextView friendSearchView;
@@ -70,6 +74,10 @@ public class FriendsActivity extends BaseActivity {
 
     }
 
+
+    /**
+     * Initialise friend request tab.
+     */
     private void initRequestsTabContent(){
         friendRequestsListView = (ListView) findViewById(R.id.friend_requests_list_view);
         noRequestsView = (TextView) findViewById(R.id.no_requests_textview);
@@ -94,6 +102,9 @@ public class FriendsActivity extends BaseActivity {
     }
 
 
+    /**
+     * Initialise friends tab
+     */
     private void initFriendsTabContent(){
 
         friendSearchView = (AutoCompleteTextView) findViewById(R.id.find_friend_textview);
@@ -144,7 +155,9 @@ public class FriendsActivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * Initialise tabs
+     */
     private void initTabs(){
 
 
@@ -184,6 +197,10 @@ public class FriendsActivity extends BaseActivity {
 
     }
 
+    /**
+     * Custom ArrayAdapter class to handle and store ArrayList of User objects when searching for friends.
+     */
+
     private class UserArrayAdapter extends ArrayAdapter<User> {
 
         HashMap<User, Integer> mIdMap = new HashMap<User, Integer>();
@@ -208,6 +225,11 @@ public class FriendsActivity extends BaseActivity {
         }
     }
 
+
+    /**
+     * Initialise friends screen threaded task.
+     * Will query database and populate list with the data retrieved.
+     */
 
     public class InitFriendsScreenTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -268,6 +290,11 @@ public class FriendsActivity extends BaseActivity {
 
     }
 
+
+    /**
+     * Async task to send a friend request and update database tables accordingly
+     * Will show a toast which contains a message notifying the user whether the friend request was sent successfully or not.
+     */
     public class SendFriendRequestTask extends AsyncTask<Void, Void, Boolean> {
 
         private User userSender;
@@ -306,7 +333,10 @@ public class FriendsActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * Async task to accept a friend request. Will update database tables accordingly
+     * Will show a toast which contains a message notifying the user whether the request was accepted successfully or not.
+     */
     public class AcceptFriendRequestTask extends AsyncTask<Void, Void, Boolean> {
 
         private User userSender;
@@ -334,44 +364,6 @@ public class FriendsActivity extends BaseActivity {
                 Utilities.showToast("Friend request accepted.", Toast.LENGTH_LONG,FriendsActivity.this);
                 finish();
                 startActivity(getIntent());
-//                ArrayList<User> newFriendsList = new ArrayList<User>();
-//
-//                newFriendsList.addAll(friendsList);
-//                newFriendsList.add(userReceiver);
-//
-//                friendsList = newFriendsList;
-//
-//                ArrayList<User> newFriendRequestList = new ArrayList<User>();
-//                for (int i = 0; i < friendRequests.size(); i++) {
-//                    if(!friendRequests.get(i).getUserId().equals(userReceiver.getUserId())){
-//                        newFriendRequestList.add(friendRequests.get(i));
-//                    }
-//                }
-//
-//                friendRequests = newFriendRequestList;
-//
-//
-//
-//                friendRequestsAdapter.clear();
-//                friendRequestsAdapter.addAll(friendRequests);
-//                friendRequestsAdapter.notifyDataSetChanged();
-//
-//                if(friendRequests.size() == 0){
-//                    noRequestsView.setVisibility(View.VISIBLE);
-//                    friendRequestsListView.setVisibility(View.GONE);
-//                }
-//
-//
-//
-//                friendsListView.setVisibility(View.VISIBLE);
-//                noFriendsView.setVisibility(View.GONE);
-//
-//                friendListAdapter.clear();
-//                friendListAdapter.addAll(friendsList);
-//                friendListAdapter.notifyDataSetChanged();
-
-
-
             }else{
                 Utilities.showToast("Could not accept friend request. Possible network issue.", Toast.LENGTH_LONG,FriendsActivity.this);
             }

@@ -22,6 +22,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+/**
+ * Main activity containing shared layouts i.e settings and navigation drawer.
+ * Each activity will extend this class instead of the Activity class.
+ */
+
 public class BaseActivity extends Activity {
 
     protected FrameLayout frameLayout;
@@ -111,7 +116,7 @@ public class BaseActivity extends Activity {
         //Check if we need to upload any local session data
         new UploadLocalSessionDataTask(this).execute();
 
-        //Register a network change receiver to perform any actions needed
+        //Register a network change receiver to perform any actions needed when there is a change in network
 
         networkReceiver = new NetworkChangeReceiver(this);
         intentFilter = new IntentFilter();
@@ -128,12 +133,15 @@ public class BaseActivity extends Activity {
 
         }
 
+
         if(isLaunch){
             isLaunch = false;
             openActivity(0);
 
         }
     }
+
+
 
     @Override
     protected void onResume() {
@@ -254,6 +262,10 @@ public class BaseActivity extends Activity {
         }
     }*/
 
+
+    /**
+     * Perform actions when user logs out.
+     */
     private void logout(){
 
         drawerList.setItemChecked(0, true);
@@ -266,6 +278,11 @@ public class BaseActivity extends Activity {
         finish();
     }
 
+
+    /**
+     * Network change broadcast reciever.
+     * Here we define what happens if the network state changes while the application is running.
+     */
     public static class NetworkChangeReceiver extends BroadcastReceiver {
         Activity activity;
 
@@ -278,12 +295,16 @@ public class BaseActivity extends Activity {
 
         @Override
         public void onReceive(Context context,Intent intent) {
+
+            //Get network status
             int status = NetworkUtil.getConnectivityStatusString(context);
             ConnectivityManager manager = (ConnectivityManager) activity.getSystemService(CONNECTIVITY_SERVICE);
-            //For 3G check
+            //Check if we have 3G.
             boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
-            //For WiFi Check
+            //Check if we have WiFi.
             boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
+
+            //If we have a network connection, attempt to load locally stored sessions.
             if (!"android.intent.action.BOOT_COMPLETED".equals(intent.getAction())) {
                 if(status!=NetworkUtil.NETWORK_STATUS_NOT_CONNECTED && (is3g || isWifi)){
                     if(RaceUtils.getLocalRaceSessions(activity).size() > 0) {
@@ -296,6 +317,11 @@ public class BaseActivity extends Activity {
         }
     }
 
+
+    /**
+     * Threaded task to perform upload of locally stored race sessions.
+     * Will only get called if a network is found during creation of the application or during a network change event.
+     */
     public static class UploadLocalSessionDataTask extends AsyncTask<Void, Void, Boolean> {
         Activity activity;
 

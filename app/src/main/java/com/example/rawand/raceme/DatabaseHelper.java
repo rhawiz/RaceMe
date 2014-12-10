@@ -11,9 +11,19 @@ import java.util.Map;
 
 /**
  * Created by RAWAND on 04/12/2014.
+ *
+ * Static class to perform general database related tasks.
+ * These must be called in a threaded task.
  */
 public class DatabaseHelper {
 
+
+    /**
+     * Get an active registered users details.
+     *
+     * @param userId
+     * @return User object containing user details. User object will be empty if query failed.
+     */
     public static User getActiveUserDetails(String userId){
         String sqlQuery = "SELECT id,username,email,firstname,surname,profile_img,gender FROM coac11.user_table WHERE id = " +  userId +" AND is_active = 1;";
         DatabaseConnection dbConnection = null;
@@ -45,6 +55,13 @@ public class DatabaseHelper {
 
     }
 
+
+    /**
+     * Get an arrayList of user objects that are NOT friends with the specified user.
+     *
+     * @param userId current users
+     * @return ArrayList of User objects
+     */
     public static ArrayList<User> getNotFriendsList(String userId){
 
         DatabaseConnection dbConnection = null;
@@ -98,6 +115,12 @@ public class DatabaseHelper {
 
     }
 
+
+    /**
+     * Get an ArrayList of User objects that are friends with a specified user.
+     * @param id current user
+     * @return ArrayList of User objects
+     */
     public static ArrayList<User> getFriendsList(String id){
         String sqlQuery = "(SELECT user_table.id, user_table.username, user_table.email, user_table.firstname, user_table.surname, user_table.profile_img,user_table.gender FROM coac11.user_table" +
                 " WHERE user_table.id" +
@@ -144,6 +167,13 @@ public class DatabaseHelper {
         return friendsArray;
     }
 
+    /**
+     * Send a friend request and update database accordingly.
+     * @param userSenderId User id that is sending the friend request
+     * @param userReceiverId User id that should receive the friend request.
+     * @return True if successfully queried the database, false if failed.
+     */
+
     public static boolean sendFriendRequest(String userSenderId, String userReceiverId){
         String sqlQuery = "INSERT INTO `coac11`.`friends_table` (`user_1_id`, `user_2_id`) VALUES ('" + userSenderId + "', '" + userReceiverId + "');";
         DatabaseConnection dbConnection = null;
@@ -167,11 +197,24 @@ public class DatabaseHelper {
         return false;
     }
 
+
+    /**
+     * Overload function of sendFriendRequest taking User objects instead of Id's.
+     * @param userSenderId User object sending friend request.
+     * @param userReceiverId User object receiving friend request.
+     * @return True if successfully queried the database, false if failed.
+     */
+
     public static boolean sendFriendRequest(User userSenderId, User userReceiverId){
         return sendFriendRequest(userSenderId.getUserId(),userReceiverId.getUserId());
     }
 
 
+    /**
+     * Get a list of User objects that have sent the specified user friend requests.
+     * @param userId the user Id.
+     * @return ArrayList of user Objects
+     */
     public static ArrayList<User> getFriendRequestUsers(String userId){
         String sqlQuery = "SELECT user_table.id, user_table.username, user_table.email, user_table.firstname, user_table.surname, user_table.profile_img, user_table.IS_ACTIVE, user_table.gender "+
         " FROM coac11.user_table WHERE id IN ("+
@@ -220,6 +263,14 @@ public class DatabaseHelper {
 
     }
 
+
+    /**
+     * Accept a friend request and update database accordingly.
+     * @param senderId Original sender Id
+     * @param receiverId Original receiver Id.
+     * @return True if successfully queried database, false if failed.
+     */
+
     public static boolean acceptFriendRequest(String senderId, String receiverId){
         String sqlQuery = "UPDATE coac11.friends_table SET accepted=1 WHERE (user_1_id= " + senderId + " AND user_2_id = " + receiverId + ");";
 
@@ -245,10 +296,28 @@ public class DatabaseHelper {
         return false;
     }
 
+    /**
+     * Overloaded method of acceptFriendRequest taking User objects instead
+     * @param senderUser Original sender User object
+     * @param receiverUser Original receiver User object.
+     * @return True if successfully queried database, false if failed.
+     */
     public static boolean acceptFriendRequest(User senderUser, User receiverUser){
         return acceptFriendRequest(senderUser.getUserId(),receiverUser.getUserId());
     }
 
+
+    /**
+     * Update a user with new values
+     *
+     * @param id User id
+     * @param email User email
+     * @param firstname User firstname
+     * @param surname User surname
+     * @param profileImg User profile img
+     * @param gender User gender
+     * @return True if successfully queried database, false if failed.
+     */
     public static boolean updateUser(String id, String email, String firstname, String surname, String profileImg, String gender){
         String sqlQuery = "UPDATE `coac11`.`user_table` SET `email`='" + email + "', `firstname`='" + firstname + "', `surname`='" + surname + "', `profile_img`='" + profileImg + "', `gender`='" + gender + "' WHERE `id`='" + id + "';";
 
@@ -274,6 +343,12 @@ public class DatabaseHelper {
         return false;
     }
 
+
+    /**
+     * Get a list of races a specified user has done.
+     * @param userId User id
+     * @return ArrayList of RaceSession objects
+     */
     public static ArrayList<RaceSession> getUserRaces(String userId){
 
         String sqlQuery = "SELECT user_id, race_type,json_gps_coords,start_time,end_time FROM coac11.race_log_table WHERE race_log_table.user_id = 1;";
@@ -319,6 +394,12 @@ public class DatabaseHelper {
         return raceSessionList;
     }
 
+
+    /**
+     * Get the list of achievements that the user has completed.
+     * @param userId user id
+     * @return ArrayList of Strings specifying completed achievements.
+     */
     public static ArrayList<String> getUserAcheivement( String userId ){
 
         String sqlQuery = "SELECT challenges_table.challenge_source" +
@@ -349,8 +430,6 @@ public class DatabaseHelper {
         if(!dbQuery.run()){
             return null;
         }
-        Log.w("DBHELPER",String.valueOf(dbQuery.getRowCount()));
-
         for (int i = 0; i < dbQuery.getRowCount(); i++) {
             ArrayList currentRow = dbQuery.get(i);
 

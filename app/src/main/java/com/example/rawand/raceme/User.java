@@ -6,6 +6,8 @@ import java.util.Set;
 
 /**
  * Created by RAWAND on 29/11/2014.
+ *
+ * Class to store user information
  */
 public class User {
 
@@ -19,6 +21,9 @@ public class User {
     private String gender;
     private boolean isEmpty;
 
+    /**
+     * Constructor to create empty user
+     */
     User(){
         this.user_id ="";
         this.username ="";
@@ -52,6 +57,8 @@ public class User {
         this.gender = gender;
     }
 
+    //Getters
+
     public String getUsername() {
         return username;
     }
@@ -79,10 +86,16 @@ public class User {
     public String getIsActive() {
         return is_active;
     }
+
     public String getGender() {
         return gender;
     }
 
+
+    /**
+     * Check if the user object contains no user.
+     * @return
+     */
     public boolean isEmpty(){
         return isEmpty;
     }
@@ -93,6 +106,10 @@ public class User {
         return getUsername() + " ( "+getFirstname() + " " + getSurname() + " )";
     }
 
+    /**
+     * Get all user details as a string
+     * @return String user details.
+     */
     public String allToString(){
 
         return "[" + getUserId() + "," + getUsername() +

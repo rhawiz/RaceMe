@@ -12,11 +12,16 @@ import java.sql.Statement;
 
 /**
  * Created by RAWAND on 29/11/2014.
+ *
+ * Contains any helper methods that is used by RegisterActivity.
  */
+
 public class RegisterUtils extends Activity{
 
 
     /**
+     * Query database to check if email exists
+     *
      * @param email
      * @return true if email is unique and false if not.
      */
@@ -51,6 +56,8 @@ public class RegisterUtils extends Activity{
 
 
     /**
+     * Query database to check if email exists.
+     *
      * @param username
      * @return true if username is unique and false if not.
      */
@@ -84,6 +91,7 @@ public class RegisterUtils extends Activity{
     }
 
     /**
+     * Method to register a new user.
      *
      * @param firstname
      * @param surname
@@ -123,6 +131,13 @@ public class RegisterUtils extends Activity{
 
 
     }
+
+    /**
+     * Get the user details by their email or username
+     *
+     * @param login Username or email
+     * @return User object with user details.
+     */
 
     public static User getUserDetails(String login){
         DatabaseConnection dbConnection = null;

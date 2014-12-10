@@ -20,6 +20,8 @@ import java.util.Date;
 
 /**
  * Created by RAWAND on 03/12/2014.
+ *
+ * Contains helper methods used throughoutthe application
  */
 public class Utilities {
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
@@ -44,7 +46,12 @@ public class Utilities {
     }
 
 
-
+    /**
+     * Convert list containing coordinate strings to an ArrayList of location objects
+     *
+     * @param locationList List of coordinates as strings
+     * @return ArrayList of location objects
+     */
     public static ArrayList<Location> toLocationArray(String[] locationList){
 
         ArrayList<Location> locationArray = new ArrayList<Location>();
@@ -62,11 +69,25 @@ public class Utilities {
         return locationArray;
     }
 
+
+    /**
+     * Given a string date, format and convert it to a Date object.
+     *
+     * @param strDate String input date string
+     * @return Date object formatted date.
+     */
     public static Date getDateFromString(String strDate){
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         return formatter.parseDateTime(strDate).toDate();
     }
 
+
+    /**
+     * Upload race sessions that are stored locally on the device.
+     *
+     * @param activity Current Activity
+     * @return true if upload was successful and false if not.
+     */
     public static boolean uploadLocalSessions(Activity activity){
         //TODO:COMPLETE THIS AND CALL IN BaseActivity
         ArrayList<RaceSession> localRaceSessions = RaceUtils.getLocalRaceSessions(activity);
@@ -91,6 +112,14 @@ public class Utilities {
         return true;
     }
 
+
+    /**
+     * Show a toast message on a screen
+     *
+     * @param msg String message content
+     * @param len Integer duration to be displayed for
+     * @param activity Activity current activity.
+     */
     public static void showToast(final String msg, final int len,final Activity activity){
         activity.runOnUiThread(new Runnable() {
             public void run()
@@ -103,9 +132,10 @@ public class Utilities {
 
     }
 
-    /*
-** Encode the bitmap image into a string
- */
+    /**
+     *
+     * Encode the bitmap image into a string
+     */
     public static String encodeBase64(Bitmap bitmap) {
 
         ByteArrayOutputStream baostream = new ByteArrayOutputStream();
@@ -116,8 +146,9 @@ public class Utilities {
         return (encodedImage);
     }
 
-    /*
-    ** Decode the string back into a bitmap image
+    /**
+     *
+     * Decode the string back into a bitmap image
      */
     public static Bitmap decodeBase64(String input) {
         byte[] decodedByte = Base64.decode(input, 0);

@@ -20,7 +20,9 @@ import android.location.LocationManager;
 
 import org.json.JSONException;
 
-
+/**
+ * Activity class for the home page.
+ */
 public class MainActivity extends BaseActivity {
 
     private Button exerciseButton;
@@ -77,9 +79,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-
-               // Intent intent = new Intent(v.getContext(), RaceActivity.class);
-               // startActivity(intent);
                 openActivity(1);
 
             }
@@ -89,9 +88,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-
-                //Intent intent = new Intent(v.getContext(), ProfileActivity.class);
-                //startActivity(intent);
                 openActivity(3);
 
             }
@@ -101,9 +97,6 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onClick(View v) {
-
-                //Intent intent = new Intent(v.getContext(), ChallengesActivity.class);
-                //startActivity(intent);
                 openActivity(2);
 
             }

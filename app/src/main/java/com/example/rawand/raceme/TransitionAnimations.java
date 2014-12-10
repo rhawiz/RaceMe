@@ -6,6 +6,8 @@ import android.view.animation.TranslateAnimation;
 
 /**
  * Created by RAWAND on 22/11/2014.
+ *
+ * Class to handle any transition animations when swiping left and right on screens.
  */
 public class TransitionAnimations {
 

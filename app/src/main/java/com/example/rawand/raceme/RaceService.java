@@ -24,6 +24,10 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Background service that gets called whenever a race session has started.
+ * Will store and update session status until race session has been stopped.
+ */
 
 public class RaceService extends Service  {
     public static Date startTime;
@@ -76,6 +80,11 @@ public class RaceService extends Service  {
 
     }
 
+
+    /**
+     * Create and handle notification icon
+     * @return
+     */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private Notification getRaceSessionNotification(){
         // The PendingIntent to launch our activity if the user selects
@@ -103,6 +112,10 @@ public class RaceService extends Service  {
         stopRaceSession();
     }
 
+
+    /**
+     * Start the race session
+     */
     private void startRaceSession(){
 
         startTime = new Date(); //Capture the exact start time
@@ -157,6 +170,12 @@ public class RaceService extends Service  {
 
     }
 
+
+    /**
+     * Returns list of coordinates defining the users route.
+     *
+     * @return ArrayList of location objects
+     */
     public static ArrayList<Location> getGpsCoordArray(){
         return gpsCoordArray;
     }
@@ -170,9 +189,19 @@ public class RaceService extends Service  {
         sendBroadcast(broadcastIntent);
     }
 
+
+    /**
+     * Get the exact date and time user started the session
+     *
+     * @return Date start date object
+     */
     public static Date getStartTime(){
         return startTime;
     }
+
+    /**
+     * Stop the race session. Store the exact finish date and time.
+     */
 
     private void stopRaceSession(){
         super.onDestroy();
@@ -192,14 +221,13 @@ public class RaceService extends Service  {
     }
 
 
+    /**
+     * This class will dynamically create a new location object and call a broadcast event.
+     * To be used for testing purposes.
+     */
+
     class testLocationRoute extends TimerTask {
-        /**
-         * This class will dynamically create a new location object and call a broadcast event.
-         * To be used for testing purposes.
-         *
-         *
-         *
-         */
+
         double latitude = 52.765538;
         double longitude =  -1.219219;
         int counter = 0;
@@ -220,6 +248,12 @@ public class RaceService extends Service  {
         }
     }
 
+
+    /**
+     * Toggle test mode
+     *
+     * @param action True if test mode on, false if test mode off.
+     */
     public void setTestMode(boolean action){
         TESTMODE = action;
     }

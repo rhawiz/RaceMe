@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 
 /**
  * Created by RAWAND on 04/12/2014.
+ *
+ * Class containing methods to do with networks
  */
 public class NetworkUtil {
     public static int TYPE_WIFI = 1;
@@ -13,6 +15,13 @@ public class NetworkUtil {
     public static int TYPE_NOT_CONNECTED = 0;
     public static final int NETWORK_STATUS_NOT_CONNECTED=0,NETWORK_STAUS_WIFI=1,NETWORK_STATUS_MOBILE=2;
 
+
+    /**
+     * Get the network status of the phone
+     *
+     * @param context Android application context
+     * @return Integer defining connectivity status
+     */
     public static int getConnectivityStatus(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

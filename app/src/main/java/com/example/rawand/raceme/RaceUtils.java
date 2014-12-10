@@ -27,6 +27,8 @@ import java.util.Map;
 
 /**
  * Created by RAWAND on 26/11/2014.
+ *
+ * Any helper methods that is used by RaceActivity are stored here.
  */
 public final class RaceUtils{
     private static final float MILES_TO_METER_CONVERSION = (float) 1609.344;
@@ -64,6 +66,13 @@ public final class RaceUtils{
         return dist;
     }
 
+
+    /**
+     * Given a list of coordinates, calculate the total distance travelled.
+     *
+     * @param gpsCoordArray ArrayList of Location objects. Users route
+     * @return Integer total distance in meters.
+     */
     public static int calculateTotalDistance(ArrayList<Location> gpsCoordArray){
         int totalDistance = 0;
 
@@ -74,6 +83,13 @@ public final class RaceUtils{
         return totalDistance;
     }
 
+
+    /**
+     * Insert race session to database table
+     *
+     * @param session RaceSession object
+     * @return Boolean true if insert was successful, false if it failed.
+     */
     public static boolean logRaceSession(RaceSession session){
 
         String sqlQuery = session.getSqlInsertStatement();
@@ -104,6 +120,15 @@ public final class RaceUtils{
         return false;
     }
 
+
+    /**
+     * Stores race session on the device as a json string.
+     * Used whenever there is no network connection.
+     *
+     * @param session RaceSession object to be stored on the device.
+     * @param activity Current activity
+     * @return Boolean true if stored successfully, false if not.
+     */
     public static boolean storeRaceSessionLocally(RaceSession session, Activity activity){
         String filename = "data";
 
@@ -141,6 +166,13 @@ public final class RaceUtils{
 
     }
 
+
+    /**
+     * Retrieve race sessions that have been stored on the device.
+     *
+     * @param activity Current activity
+     * @return ArrayList of RaceSession objects.
+     */
     public static ArrayList<RaceSession> getLocalRaceSessions(Activity activity){
 
         if(activity == null) {
@@ -175,6 +207,12 @@ public final class RaceUtils{
 
     }
 
+
+    /**
+     * Remove all locally stored race sessions.
+     *
+     * @param activity Current activity
+     */
     public static void clearLocalRaceSessions(Activity activity){
         File file = new File(activity.getApplicationContext().getFilesDir(), "data");
         activity.getApplicationContext().deleteFile("data");

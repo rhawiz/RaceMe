@@ -19,6 +19,11 @@ public class Authentication {
 
     }
 
+
+    /**
+     * Connection
+     * @return Boolean value true if connection is successful and false if not.
+     */
     public boolean connect(){
         try {
             dbConnection =  new DatabaseConnection("co-project.lboro.ac.uk:3306", "coac11", "wme38aie");
@@ -35,10 +40,22 @@ public class Authentication {
         return false;
     }
 
+
+    /**
+     * Close the database connection
+     */
     public void close(){
         dbConnection.close();
     }
 
+
+    /**
+     * Perform authentication task.
+     *
+     * @param login user login
+     * @param password user password
+     * @return Boolean value true if login and password match what's in the Database and false if not.
+     */
     public Boolean authenticate(String login, String password){
 
         String sql_query =
@@ -67,6 +84,12 @@ public class Authentication {
         return false;
     }
 
+
+    /**
+     * Get the user details
+     *
+     * @return User Object containin user details. Will be empty if not authorised.
+     */
     public User getUser(){
         return userData;
     }

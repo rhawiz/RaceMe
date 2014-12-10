@@ -26,6 +26,9 @@ import org.w3c.dom.Text;
 import java.util.Date;
 
 
+/**
+ * View a past race session with its detail.
+ */
 public class ViewRaceActivity extends BaseActivity {
 
     private TextView dateStarted;
@@ -82,6 +85,10 @@ public class ViewRaceActivity extends BaseActivity {
 
     }
 
+
+    /**
+     * Initialise details tab
+     */
     private void initDetailTabContent(){
 
         DateTimeFormatter timeFormat = DateTimeFormat.forPattern("kk:mm a");
@@ -124,6 +131,10 @@ public class ViewRaceActivity extends BaseActivity {
 
         //dateStarted.setText(raceSession.getStartTime());
     }
+
+    /**
+     * Initialise tabs
+     */
     private void initTabs(){
 
 
@@ -163,6 +174,11 @@ public class ViewRaceActivity extends BaseActivity {
 
     }
 
+
+    /**
+     * Initialise map screen.
+     *
+     */
     private void initMap(){
         routePolylineOption = new PolylineOptions().width(5)
                 .color(Color.BLUE)

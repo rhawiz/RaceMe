@@ -60,7 +60,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * Race screen where user is able to start a race session, view current route on a map and view past routes.
+ */
 public class RaceActivity extends BaseActivity implements Serializable {
     //Declare layout fields
     private TabHost tabHost;
@@ -234,6 +236,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
+
+    /**
+     * Initialise the Google Maps
+     */
     private void initMap(){
         routePolylineOption = new PolylineOptions().width(5)
                 .color(Color.BLUE)
@@ -245,6 +251,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         map.addPolyline(routePolylineOption);
     }
 
+
+    /**
+     * Called when application was closed but race session was not stopped.
+     * Will communicate with the running race service and retrieve data to contiune the race session.
+     */
     private void resumeSession(){
         startButton.setVisibility(View.GONE);
         stopButton.setVisibility(View.VISIBLE);
@@ -269,6 +280,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         distanceTravelledView.setText(String.valueOf(distanceTravelled));
     }
 
+    /**
+     * Called when receiving a location change broadcast.
+     * It will calculate the distance from the last received coordinates and update total distance, average distance and the map route drawing.
+     */
+
     private void updateDistance(){
         if(gpsCoordArray.size() > 1){
 
@@ -290,6 +306,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
+
+    /**
+     * Called when user touches start race button
+     * Will set all elements to their start states and start the race background service
+     */
     private void startRaceSession(){
         distanceTravelled = 0;
         distanceTravelledView.setText("0");
@@ -321,6 +342,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
+
+    /**
+     * Called when user touches stop race.
+     * Will stop the race service and call logSession to log the current race route.
+     */
     private void stopRaceSession(){
         //Utilities.getAlertDialog(RaceActivity.this,"Route logged.","Well done!\nYour session has been saved.",R.drawable.ic_launcher).show();
 
@@ -335,6 +361,11 @@ public class RaceActivity extends BaseActivity implements Serializable {
         stopService(new Intent(this,RaceService.class));
     }
 
+
+    /**
+     * Creates new RaceSession object to store session details.
+     * Then calls an Async Task to handle logging of the session to the database
+     */
     private void logSession() {
         String userId = SaveSharedPreference.getUserDetails(this).getUserId();
         RaceSession session = new RaceSession(userId,raceType,gpsCoordArray,startTime,endTime);
@@ -345,6 +376,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
+
+    /**
+     * Initialise all tabs
+     */
     private void initTabs() {
 
 
@@ -390,7 +425,9 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
-
+    /**
+     * Custom Array adapter to handle and store user RaceSessions when viewing past races
+     */
     private class RaceArrayAdapter extends ArrayAdapter<RaceSession> {
 
         HashMap<RaceSession, Integer> mIdMap = new HashMap<RaceSession, Integer>();
@@ -422,6 +459,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
         super.onDestroy();
     }
 
+
     /**
      * To check whether a service is running or not
      *
@@ -438,6 +476,12 @@ public class RaceActivity extends BaseActivity implements Serializable {
         return false;
     }
 
+
+    /**
+     * Broadcast receiver to receive broadcasts from RaceService whenever there is a change in location.
+     * Will handle what needs to be called whenever the user location changes.
+     *
+     */
     public class DataUpdateReceiver extends BroadcastReceiver {
         public DataUpdateReceiver() {
         }
@@ -460,6 +504,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
     }
 
 
+    /**
+     * Created and called when the user stops the current session.
+     * Takes in a RaceSession object and will insert into database table.
+     */
     public class LogSessionTask extends AsyncTask<Void, Void, Boolean> {
 
 
@@ -497,6 +545,10 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     }
 
+
+    /**
+     * Async task to retrieve and populate past race sessions.
+     */
     public class GetRaceSessionsTask extends AsyncTask<Void, Void, Boolean> {
 
 

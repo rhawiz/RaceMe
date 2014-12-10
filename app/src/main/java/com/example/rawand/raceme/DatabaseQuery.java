@@ -3,6 +3,7 @@ package com.example.rawand.raceme;
 /**
  * Created by RAWAND on 29/11/2014.
  *
+ * Database Query class handle database queries and store data retrieved from the database if applicable.
  */
 import android.util.Log;
 
@@ -32,6 +33,12 @@ public class DatabaseQuery {
 
     }
 
+
+    /**
+     * Run query on database connection.
+     *
+     * @return True if successfully queried database and false if it fails for any reason.
+     */
     public boolean run(){
         if(queryType.equals("INSERT") ||queryType.equals("UPDATE")) {
             try {
@@ -76,26 +83,58 @@ public class DatabaseQuery {
 
     }
 
+
+    /**
+     * Close the database connection
+     */
     public void close(){
         if(db!=null)
             db.close();
     }
 
+
+    /**
+     * Get the number of rows the query returned from the database
+     *
+     * @return Integer number of rows
+     */
     public int getRowCount(){
         return rowCount;
     }
+
+    /**
+     * Get the number of columns returned from the database.
+     *
+     * @return Integer number of columns
+     */
     public int getColumnCount(){
         return columnCount;
     }
 
+
+    /**
+     * Return the sql query that was run
+     *
+     * @return String sql Query
+     */
     public String getSqlQuery() {
         return sqlQuery;
     }
 
+
+    /**
+     * Return the query results as an ArrayList
+     * @return
+     */
     public ArrayList getArray(){
         return resultsArray;
     }
 
+
+    /**
+     * Construct the result arraylist
+     * @throws SQLException
+     */
     private void constructArray() throws SQLException{
         resultsArray = new ArrayList<ArrayList>();
         if(rowCount > 0) {
@@ -112,6 +151,13 @@ public class DatabaseQuery {
         }
     }
 
+    /**
+     * Get results by row and column
+     *
+     * @param row Row
+     * @param col Column
+     * @return String result at row, col
+     */
     public String get(int row, int col){
         if(row < rowCount && col < columnCount){
             return (String) resultsArray.get(row).get(col);
@@ -119,6 +165,12 @@ public class DatabaseQuery {
         return null;
     }
 
+
+    /**
+     * Overload function, get indicated row as ArrayList
+     * @param row Row
+     * @return ArrayList row
+     */
     public ArrayList get(int row){
         return resultsArray.get(row);
     }

@@ -111,10 +111,8 @@ public class ChallengesActivity extends BaseActivity {
                 for (String s : challengesArrayList){
                     //ImageView imgview = (ImageView) findViewById(s);
                     //challengesArrayList.contains();
-                    Log.w("CHALLENGESACTIVITY",s);
                     for(ImageView i : challengesIconArray){
                         if(s.equals(i.getTag().toString())){
-                            Log.w("CHALLENGESACTIVITY",i.toString());
                             i.setImageResource(getResources().getIdentifier(s,"drawable",getPackageName()));
                             break;
                         }
