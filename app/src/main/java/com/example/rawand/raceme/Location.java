@@ -2,7 +2,7 @@ package com.example.rawand.raceme;
 
 import java.io.Serializable;
 
-public class Location implements Serializable {
+public class Location implements Serializable {//Sets & gets location from display with weather
 
     private String country;
     private String city;

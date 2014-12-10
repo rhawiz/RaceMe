@@ -16,6 +16,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.View;
@@ -24,8 +25,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
-
+import android.view.LayoutInflater;
 
 import java.util.List;
 
@@ -42,7 +44,7 @@ public class SettingsActivity extends BaseActivity {
 
         // Get the dropdown list for the units and populate it with units
         Spinner dropdown = (Spinner)findViewById(R.id.units_picker);
-        String[] items = new String[]{"Meters", "Miles"}; // Extra units can be added here
+        String[] items = new String[]{"m/s", "km/h"}; // Extra units can be added here
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dropdown.setAdapter(adapter); // Populate the dropdown
 
@@ -67,7 +69,8 @@ public class SettingsActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String selectedUnit = parentView.getItemAtPosition(position).toString();
                 if( selectedUnit.length() > 0){
-                    SaveSharedPreference.setUnits( selectedUnit); // Set the units
+                    SaveSharedPreference.setUnits(selectedUnit); // Set the units
+
                 }
 
             }
@@ -76,6 +79,7 @@ public class SettingsActivity extends BaseActivity {
 
             }
         });
+
     }
 
 }

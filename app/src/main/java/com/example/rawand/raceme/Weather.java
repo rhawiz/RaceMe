@@ -2,7 +2,7 @@ package com.example.rawand.raceme;
 
 import android.location.Location;
 
-public class Weather {
+public class Weather {//gets & sets current weather conditions
 
     public com.example.rawand.raceme.Location location;
     public CurrentCondition currentCondition = new CurrentCondition();

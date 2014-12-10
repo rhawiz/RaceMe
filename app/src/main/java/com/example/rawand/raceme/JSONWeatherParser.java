@@ -9,10 +9,10 @@ public class JSONWeatherParser {
     public static Weather getWeather(String data) throws JSONException {
         Weather weather = new Weather();
 
-        // We create out JSONObject from the data
+        // create out JSONObject from the data
         JSONObject jObj = new JSONObject(data);
 
-        // We start extracting the info
+        // start extracting the info
         Location loc = new Location();
 
         JSONObject sysObj = getObject("sys", jObj);
@@ -20,10 +20,10 @@ public class JSONWeatherParser {
         loc.setCity(getString("name", jObj));
         weather.location = loc;
 
-        // We get weather info (This is an array)
+        // get weather info (This is an array)
         JSONArray jArr = jObj.getJSONArray("weather");
 
-        // We use only the first value
+        // use only the first value
         JSONObject JSONWeather = jArr.getJSONObject(0);
         weather.currentCondition.setWeatherId(getInt("id", JSONWeather));
         weather.currentCondition.setDescr(getString("description", JSONWeather));

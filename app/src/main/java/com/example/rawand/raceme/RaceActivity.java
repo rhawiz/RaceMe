@@ -71,7 +71,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
     private TableLayout detailTab;
     private GridLayout mapTab;
     private TextView distanceTravelledView;
-    private TextView averageSpeedView;
+    private TextView averageSpeedUnit;
     private TextView raceStatus;
     private LocationManager locationManager;
     private Date startTime;
@@ -138,7 +138,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
         raceStatus = (TextView) findViewById(R.id.race_status);
 
         distanceTravelledView = (TextView) findViewById(R.id.distance_travelled_view);
-        averageSpeedView = (TextView) findViewById(R.id.average_speed_view);
+        averageSpeedUnit = (TextView) findViewById(R.id.average_speed_unit);
         detailTab = (TableLayout) findViewById(R.id.race_details_tab);
         mapTab = (GridLayout) findViewById(R.id.race_map_tab);
 
@@ -146,6 +146,13 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
         chronometer = (Chronometer) findViewById(R.id.timer);
         chronometer.setBase(SystemClock.elapsedRealtime());
+
+        String units = SaveSharedPreference.getUnits();
+
+        if(units != null){ //set speed units
+
+            averageSpeedUnit.setText(units);
+        }
 
         raceTypeRadioGroup = (RadioGroup) findViewById(R.id.race_type_radio_group);
         walkRadio = (RadioButton) findViewById(R.id.walk_radio);
@@ -282,7 +289,7 @@ public class RaceActivity extends BaseActivity implements Serializable {
 
     /**
      * Called when receiving a location change broadcast.
-     * It will calculate the distance from the last received coordinates and update total distance, average distance and the map route drawing.
+     * It will calculate the distance from the last received coordinates and update total distance, average speed and the map route drawing.
      */
 
     private void updateDistance(){
@@ -298,8 +305,18 @@ public class RaceActivity extends BaseActivity implements Serializable {
         int mins = Integer.parseInt(tokens[0]);
         int secs = Integer.parseInt(tokens[1]);
         int duration = (60 * mins) + secs;
+        String units = "km/h";
+
         if (duration > 0) {
             averageSpeed = distanceTravelled / (int) duration;
+
+            units = SaveSharedPreference.getUnits();
+
+            if (units == "km/h") {
+                averageSpeed = Math.round(averageSpeed * 3.6f);
+
+            }
+
             TextView averageSpeedText = (TextView) findViewById(R.id.average_speed_view);
             averageSpeedText.setText(String.valueOf(averageSpeed));
         }

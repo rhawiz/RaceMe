@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_main, frameLayout);
         drawerList.setItemChecked(position, true);
@@ -52,19 +53,15 @@ public class MainActivity extends BaseActivity {
         welcomeMsg = (TextView) findViewById(R.id.welMsg);
 
 
-
-
         User userDetails = SaveSharedPreference.getUserDetails(this);
 
-
-
-        if(userDetails == null){
+        if(userDetails == null){//displaying welcome message
             finish();
         }else{
             welcomeMsg.setText("Hi,\n" + SaveSharedPreference.getUserDetails(this).getFirstname());
         }
 
-        if(userDetails.getProfileImg() != null || userDetails.getProfileImg() != ""){
+        if(userDetails.getProfileImg() != null || userDetails.getProfileImg() != ""){//setting profile button
 
             if( userDetails.getProfileImg().length() > 1){
                 // Turn the image string into a bitmap image
@@ -75,6 +72,7 @@ public class MainActivity extends BaseActivity {
             }
         }
 
+        //setting listeners for all buttons
         exerciseButton.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -116,7 +114,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    protected void getWeather() {
+    protected void getWeather() {//getting weather
 
         cityText = (TextView) findViewById(R.id.cityText);
         //condDesc = (TextView) findViewById(R.id.condDesc);
@@ -128,6 +126,7 @@ public class MainActivity extends BaseActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+        //checking for network if true, hide button and call weather functions
         if (networkInfo != null && networkInfo.isConnected()) {
 
             refreshButton.setVisibility(View.INVISIBLE);
@@ -162,6 +161,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    //used to get weather in background
     private class JSONWeatherTask extends AsyncTask<String, Void, Weather> {
 
         @Override
@@ -187,6 +187,7 @@ public class MainActivity extends BaseActivity {
         protected void onPostExecute(Weather weather) {
             super.onPostExecute(weather);
 
+            //show weather with description icon and temp
             if (weather != null) {
 
                 cityText.setText(weather.location.getCity() + "," + weather.location.getCountry());
